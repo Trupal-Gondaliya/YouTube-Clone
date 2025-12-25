@@ -1,12 +1,14 @@
 import './App.css'
+import Header from './components/Header'
+import Sidebar from './components/Sidebar';
+import { useState } from 'react';
 
 function App() {
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   return (
     <>
-      <h1 class="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+      <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <Sidebar isOpen={isSidebarOpen} toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
     </>
   )
 }
