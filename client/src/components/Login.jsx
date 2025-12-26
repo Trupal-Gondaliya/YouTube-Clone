@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../redux/userSlice';
 import { useNavigate, Link } from 'react-router-dom';
@@ -18,7 +18,7 @@ const Login = () => {
         e.preventDefault();
         dispatch(loginStart());
         try {
-            const res = await axios.post("http://localhost:5000/auth/login", { email, password });
+            const res = await axiosInstance.post("http://localhost:5000/auth/login", { email, password });
             dispatch(loginSuccess(res.data));
             localStorage.setItem("access_token", res.data.token);
             navigate("/");

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../utils/axiosInstance.js';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Signup = () => {
@@ -11,7 +11,7 @@ const Signup = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:5000/auth/signup", { username, email, password });
+            await axiosInstance.post("http://localhost:5000/auth/signup", { username, email, password });
             alert("Registration Successful!");
             navigate("/login");
         } catch (err) {
