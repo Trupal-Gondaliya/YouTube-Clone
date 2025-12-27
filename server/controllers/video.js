@@ -1,9 +1,13 @@
 import Video from "../models/Video.js";
+import Channel from "../models/Channel.js";
 
 export const addVideo = async (req, res) => {
   try {
     const newVideo = new Video({ ...req.body, uploader: req.user.id });
     const savedVideo = await newVideo.save();
+    await Channel.findByIdAndUpdate(req.body.channelId, {
+      $push: { videos: savedVideo._id },
+    });
     res.status(201).json(savedVideo);
   } catch (err) {
     res.status(500).json(err);
@@ -43,7 +47,7 @@ export const getAllVideos = async (req, res) => {
   try {
     // We populate 'uploader' to get the username and avatar for the video card
     const videos = await Video.find()
-      .populate("uploader", "username avatar") 
+      .populate("uploader", "username avatar")
       .populate("channelId", "channelName"); // To get the specific Channel Name
     res.status(200).json(videos);
   } catch (err) {
