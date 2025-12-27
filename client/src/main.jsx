@@ -9,6 +9,7 @@ import { Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/appStore.js';
 import ChannelPage from './components/ChannelPage.jsx'
+import UploadVideo from './components/UploadVideo.jsx'
 
 const Router = createBrowserRouter([
   {
@@ -18,7 +19,8 @@ const Router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <Signup /> },
-      { path: "/channel/:id", element: <ChannelPage />}
+      { path: "/channel/:id", element: <ChannelPage />},
+      {path: "/upload", element: <UploadVideo />},
     ],
   },
 ])

@@ -47,6 +47,22 @@ const Header = ({ toggleSidebar }) => {
         }
     }
 
+    const handleUploadClick = () => {
+        if (!currentUser) {
+            navigate("/login");
+            return;
+        }
+        // Check if the user has any channels in their profile 
+        if (currentUser.channels && currentUser.channels.length > 0) {
+            // Navigate to Upload Page and pass the channel ID
+            navigate("/upload",{state: { channelId: currentUser.channels[0] } });
+        } else {
+            alert("Please create a channel first to upload videos.");
+            setOpenChannelModal(true);
+        }
+        setShowChannel(false);
+    };
+
     return (
         <header className="flex justify-between items-center px-4 h-14 sticky top-0 z-50 bg-white">
             <div className="flex items-center gap-4">
@@ -90,7 +106,7 @@ const Header = ({ toggleSidebar }) => {
                             {/* Dropdown menu for create */}
                             {showChannel && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
-                                    <button
+                                    <button onClick={handleUploadClick}
                                         className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 transition flex items-center gap-2">
                                         <FiYoutube />
                                         <span>Upload video</span>
