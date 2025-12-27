@@ -14,19 +14,20 @@ function App() {
   return (
     <div className="flex flex-col h-screen">
       <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
-      
-      <div className="flex flex-1 overflow-hidden">
+
+      <div className="flex flex-1 overflow-hidden relative">
         {/* Only show Sidebar if we are NOT on a login/signup page */}
         {!isAuthPage && (
-          <Sidebar 
-            isOpen={isSidebarOpen} 
-            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} 
-          />
+          <Sidebar
+            isOpen={isSidebarOpen}
+            toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}/>
         )}
-        
+
         {/* Main Content Area */}
-        <main className={`flex-1 overflow-y-auto ${!isAuthPage && isSidebarOpen ? 'ml-0' : ''}`}>
-          <Outlet />
+        <main className={`flex-1 overflow-y-auto transition-all duration-300 bg-[#f9f9f9]
+          ${!isAuthPage && isSidebarOpen ? 'ml-64' : 'ml-20'} 
+          ${isAuthPage ? 'ml-0' : ''}`}>
+          <Outlet context={{ isSidebarOpen }} />
         </main>
       </div>
     </div>

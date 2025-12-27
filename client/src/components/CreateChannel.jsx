@@ -62,8 +62,9 @@ const CreateChannel = ({ setOpen }) => {
                 </div>
 
                 <div className="flex justify-end gap-3">
-                    <button onClick={() => navigate('/')}>Cancel</button>
-                    <button onClick={handleCreate} className="bg-blue-600 text-white px-4 py-2 rounded">Create</button>
+                    <button onClick={() => setOpen(false)}
+                        className=" w-1/2 bg-red-500 text-white py-2 rounded font-bold hover:bg-red-800 disabled:bg-gray-400">Cancel</button>
+                    <button onClick={handleCreate} className="w-1/2 bg-blue-600 text-white px-4 py-2 rounded">Create</button>
                 </div>
             </div>
         </div>

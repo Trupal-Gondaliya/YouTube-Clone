@@ -16,6 +16,7 @@ import { PiCoatHanger } from "react-icons/pi";
 import { AiFillYoutube } from "react-icons/ai";
 import { CiFlag1 } from "react-icons/ci";
 import { HiMenu } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const SidebarItem = ({ icon, label, isOpen }) => (
     <div className={`flex items-center rounded-lg cursor-pointer transition-colors
@@ -51,11 +52,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     return (
         <>
-            {/* OVERLAY: Appears only when Sidebar is open to dim the background */}
-            {isOpen && (
-                <div className={`fixed inset-0 bg-black/50 z-40 transition-opacity duration-300`} onClick={toggleSidebar} />
-            )}
-
             {/* MAIN SIDEBAR CONTAINER */}
             <aside className={`fixed left-0 transition-all duration-200 ease-in-out overflow-y-auto custom-scrollbar bg-white
                 ${isOpen
@@ -77,7 +73,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 )}
 
                 {/* CORE NAVIGATION SECTION */}
-                <SidebarItem icon={<IoMdHome />} label="Home" isOpen={isOpen} active className="top-14"/>
+                <Link to="/"><SidebarItem icon={<IoMdHome />} label="Home" isOpen={isOpen} active className="top-14"/></Link>
                 <SidebarItem icon={<SiYoutubeshorts />} label="Shorts" isOpen={isOpen} />
                 <SidebarItem icon={<MdOutlineSubscriptions />} label="Subscriptions" isOpen={isOpen} />
 
