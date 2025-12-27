@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
-// import VideoCard from '../components/VideoCard'; 
+import VideoGrid from './VideoGrid';
 
 const ChannelPage = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const [channel, setChannel] = useState(null);
 
     useEffect(() => {
@@ -26,10 +26,10 @@ const ChannelPage = () => {
             {/* 1. Channel Banner */}
             <div className="w-full h-50 md:h-62.5 bg-gray-200">
                 {channel.channelBanner ? (
-                    <img 
-                        src={channel.channelBanner} 
-                        alt="Banner" 
-                        className="w-full h-full object-cover" 
+                    <img
+                        src={channel.channelBanner}
+                        alt="Banner"
+                        className="w-full h-full object-cover"
                     />
                 ) : (
                     <div className="w-full h-full bg-linear-to-r from-gray-300 to-gray-400" />
@@ -51,6 +51,21 @@ const ChannelPage = () => {
 
             <hr className="border-gray-200" />
 
+            {/* 3. Videos Grid */}
+            <div className="px-4 md:px-24 py-8">
+                    <h2 className="text-xl font-bold mb-6">Videos</h2>
+                    {channel.videos?.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {channel.videos.map((video) => (
+                                <VideoGrid key={video._id} video={video} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-20 text-gray-500">
+                            <p className="text-lg">This channel hasn't uploaded any videos yet.</p>
+                        </div>
+                    )}
+                </div> 
         </div>
     );
 };
