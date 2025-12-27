@@ -5,14 +5,22 @@ import { MdOutlineKeyboardVoice } from "react-icons/md";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice.js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { GoPlus } from "react-icons/go";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { FiYoutube } from "react-icons/fi";
+import { CgLivePhoto } from "react-icons/cg";
+import { IoCreateOutline } from "react-icons/io5";
+import CreateChannel from "./CreateChannel.jsx";
 
 const Header = ({ toggleSidebar }) => {
     const { currentUser } = useSelector(state => state.user);
-    const [showMenu, setShowMenu] = useState(false); // Controls the dropdown
+    const [showMenu, setShowMenu] = useState(false);
+    const [showChannel, setShowChannel] = useState(false);
+    const [openChannelModal, setOpenChannelModal] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -28,6 +36,16 @@ const Header = ({ toggleSidebar }) => {
     const getFirstLetter = (name) => {
         return name ? name.charAt(0).toUpperCase() : "?";
     };
+
+    // function to view channel page
+    const viewChannelPage = () => {
+        if (currentUser.channels && currentUser.channels.length > 0) {
+            // Navigate to the first channel in their list
+            navigate(`/channel/${currentUser.channels[0]}`);
+        } else {
+            alert("You don't have a channel yet. Create one first!");
+        }
+    }
 
     return (
         <header className="flex justify-between items-center px-4 h-14 sticky top-0 z-50 bg-white">
@@ -60,40 +78,79 @@ const Header = ({ toggleSidebar }) => {
                 </button>
             </div>
 
-            <div className="flex gap-4 items-center relative">
-                <div >
-                    <BsThreeDotsVertical className="cursor-pointer" />
-                </div>
+            <div className="flex gap-6 items-center">
                 {currentUser ? (
-                    <div className="relative">
-                        {/* User Avatar Circle */}
-                        <div onClick={() => setShowMenu(!showMenu)} className="w-9 h-9 rounded-full bg-purple-700 flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-purple-800 transition-colors">
-                            {getFirstLetter(currentUser.username)}
-                            
-                        </div>
-                        {/* Dropdown Menu */}
-                        {showMenu && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
-                                <div className="px-4 py-2 border-b border-gray-100">
-                                    <p className="text-sm font-semibold">{currentUser.username}</p>
-                                    <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
+                    <>
+                        <div className="relative">
+                            <button onClick={() => setShowChannel(!showChannel)}
+                                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 px-5 rounded-full transition-colors">
+                                <GoPlus className="text-2xl" />
+                                <span className="font-medium">Create</span>
+                            </button>
+                            {/* Dropdown menu for create */}
+                            {showChannel && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                                    <button
+                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 transition flex items-center gap-2">
+                                        <FiYoutube />
+                                        <span>Upload video</span>
+                                    </button>
+                                    <button
+                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 transition flex items-center gap-2">
+                                        <CgLivePhoto />
+                                        <span>Go live</span>
+                                    </button>
+                                    <button
+                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 transition flex items-center gap-2">
+                                        <IoCreateOutline />
+                                        <span>Create post</span>
+                                    </button>
                                 </div>
-                                <button 
-                                    onClick={handleLogout}
-                                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition">
-                                    Sign out
-                                </button>
+                            )}
+                        </div>
+                        <div className="cursor-pointer hover:bg-gray-200 p-2 rounded-full">
+                            <IoMdNotificationsOutline className="text-2xl" />
+                        </div>
+                        {/* User Avatar Circle */}
+                        <div className="relative">
+                            <div onClick={() => setShowMenu(!showMenu)} className="w-9 h-9 rounded-full bg-purple-700 flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-purple-800 transition-colors">
+                                {getFirstLetter(currentUser.username)}
                             </div>
-                        )}
-                    </div>
+                            {/* Dropdown Menu */}
+                            {showMenu && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                                    <button onClick={viewChannelPage}
+                                        className="px-4 py-2 border-b border-gray-100">
+                                        <p className="text-sm font-semibold">{currentUser.username}</p>
+                                        <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
+                                    </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition">
+                                        Sign out
+                                    </button>
+                                    <button onClick={() => setOpenChannelModal(true)}
+                                        className="w-full text-left px-4 py-2 text-md text-blue-800 hover:bg-gray-100 transition">
+                                        Create Channel
+                                    </button>
+                                    {openChannelModal && <CreateChannel setOpen={setOpenChannelModal} />}
+                                </div>
+                            )}
+                        </div>
+                    </>
                 ) : (
-                    <Link to="/login" className="text-blue-600 flex items-center gap-2 text-xl border rounded-full border-gray-300 px-3 h-10 cursor-pointer hover:bg-blue-100 transition-colors">
-                        <FaRegCircleUser />
-                        <span className="text-[15px] font-medium">Sign in</span>
-                    </Link>
+                    <div className="flex items-center gap-6">
+                        <div className="cursor-pointer hover:bg-gray-200 rounded-full p-2">
+                            <BsThreeDotsVertical className="text-xl" />
+                        </div>
+                        <Link to="/login" className="text-blue-600 flex items-center gap-2 text-xl border rounded-full border-gray-300 px-3 h-10 cursor-pointer hover:bg-blue-100 transition-colors">
+                            <FaRegCircleUser />
+                            <span className="text-[15px] font-medium">Sign in</span>
+                        </Link>
+                    </div>
                 )}
             </div>
-        </header>
+        </header >
     );
 };
 
