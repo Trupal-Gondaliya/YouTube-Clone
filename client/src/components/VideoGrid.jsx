@@ -2,6 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const VideoGrid = ({ video, userData }) => {
+  const avatarSrc = video.uploader?.avatar || userData?.avatar;
+  const displayName = video.uploader?.username || userData?.username || "U";
+
   return (
     <Link to={`/video/${video._id}`} className="flex flex-col gap-2 mb-8 cursor-pointer group">
       {/* Thumbnail */}
@@ -12,18 +15,14 @@ const VideoGrid = ({ video, userData }) => {
       {/* Details */}
       <div className="flex gap-3 px-1">
         <div className="w-9 h-9 rounded-full bg-purple-600 shrink-0 flex items-center justify-center text-white text-sm font-bold">
-          {(video.uploader?.avatar || userData.avatar) ? (
+          {avatarSrc ? (
             <img
-              src={video.uploader?.avatar || userData.avatar}
+              src={avatarSrc}
               alt="avtar"
               className="w-full h-full object-cover"
             />
           ) : (
-            <span>{(
-              video.uploader?.username ||
-              userData.username ||
-              "I"
-            ).charAt(0).toUpperCase()}</span>
+            <span>{displayName.charAt(0).toUpperCase()}</span>
           )}
         </div>
         <div className="flex flex-col">
