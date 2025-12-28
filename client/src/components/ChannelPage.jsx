@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import axiosInstance from '../utils/axiosInstance';
-import VideoGrid from './VideoGrid';
+import axiosInstance from '../utils/axiosInstance.js';
+import VideoGrid from './VideoGrid.jsx';
 
 const ChannelPage = () => {
     const { id } = useParams();
@@ -20,6 +20,7 @@ const ChannelPage = () => {
     }, [id]);
 
     if (!channel) return <div className="p-10 text-center">Loading channel...</div>;
+    const userData = channel.owner;
 
     return (
         <div className="flex flex-col w-full min-h-screen bg-white">
@@ -39,7 +40,15 @@ const ChannelPage = () => {
             {/* 2. Channel Info Header */}
             <div className="px-4 md:px-24 py-6 flex flex-col md:flex-row items-center gap-6">
                 <div className="w-32 h-32 bg-purple-700 rounded-full flex items-center justify-center text-white text-4xl font-bold">
-                    {channel.channelName.charAt(0)}
+                    {channel.owner?.avatar ? (
+                        <img
+                            src={channel.owner.avatar}
+                            alt={channel.owner.username}
+                            className="w-full h-full object-cover"
+                        />
+                    ) : (
+                        <span>{channel.owner?.username?.charAt(0).toUpperCase()}</span>
+                    )}
                 </div>
                 <div className="flex flex-col items-center md:items-start">
                     <h1 className="text-3xl font-bold">{channel.channelName}</h1>
@@ -53,19 +62,19 @@ const ChannelPage = () => {
 
             {/* 3. Videos Grid */}
             <div className="px-4 md:px-24 py-8">
-                    <h2 className="text-xl font-bold mb-6">Videos</h2>
-                    {channel.videos?.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {channel.videos.map((video) => (
-                                <VideoGrid key={video._id} video={video} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center py-20 text-gray-500">
-                            <p className="text-lg">This channel hasn't uploaded any videos yet.</p>
-                        </div>
-                    )}
-                </div> 
+                <h2 className="text-xl font-bold mb-6">Videos</h2>
+                {channel.videos?.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {channel.videos.map((video) => (
+                            <VideoGrid key={video._id} video={video} userData={userData}/>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="text-center py-20 text-gray-500">
+                        <p className="text-lg">This channel hasn't uploaded any videos yet.</p>
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

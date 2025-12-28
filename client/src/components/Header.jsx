@@ -55,7 +55,7 @@ const Header = ({ toggleSidebar }) => {
         // Check if the user has any channels in their profile 
         if (currentUser.channels && currentUser.channels.length > 0) {
             // Navigate to Upload Page and pass the channel ID
-            navigate("/upload",{state: { channelId: currentUser.channels[0] } });
+            navigate("/upload", { state: { channelId: currentUser.channels[0] } });
         } else {
             alert("Please create a channel first to upload videos.");
             setOpenChannelModal(true);
@@ -130,7 +130,15 @@ const Header = ({ toggleSidebar }) => {
                         {/* User Avatar Circle */}
                         <div className="relative">
                             <div onClick={() => setShowMenu(!showMenu)} className="w-9 h-9 rounded-full bg-purple-700 flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-purple-800 transition-colors">
-                                {getFirstLetter(currentUser.username)}
+                                {currentUser.avatar ? (
+                                    <img
+                                        src={currentUser.avatar}
+                                        alt={currentUser.username}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <span>{getFirstLetter(currentUser.username)}</span>
+                                )}
                             </div>
                             {/* Dropdown Menu */}
                             {showMenu && (

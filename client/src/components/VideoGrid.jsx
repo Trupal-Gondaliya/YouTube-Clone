@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const VideoGrid = ({ video }) => {
+const VideoGrid = ({ video, userData }) => {
   return (
     <Link to={`/video/${video._id}`} className="flex flex-col gap-2 mb-8 cursor-pointer group">
       {/* Thumbnail */}
@@ -12,7 +12,19 @@ const VideoGrid = ({ video }) => {
       {/* Details */}
       <div className="flex gap-3 px-1">
         <div className="w-9 h-9 rounded-full bg-purple-600 shrink-0 flex items-center justify-center text-white text-sm font-bold">
-           {video.uploader?.username?.charAt(0) || "U"}
+          {(video.uploader?.avatar || userData.avatar) ? (
+            <img
+              src={video.uploader?.avatar || userData.avatar}
+              alt="avtar"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <span>{(
+              video.uploader?.username ||
+              userData.username ||
+              "I"
+            ).charAt(0).toUpperCase()}</span>
+          )}
         </div>
         <div className="flex flex-col">
           <h3 className="font-bold text-md leading-tight line-clamp-2">{video.title}</h3>
@@ -23,5 +35,15 @@ const VideoGrid = ({ video }) => {
     </Link>
   );
 };
-
+// {
+//   channel.owner?.avatar ? (
+//     <img
+//       src={channel.owner.avatar}
+//       alt={channel.owner.username}
+//       className="w-full h-full object-cover"
+//     />
+//   ) : (
+//   <span>{channel.owner?.username?.charAt(0).toUpperCase()}</span>
+// )
+// }
 export default VideoGrid;
