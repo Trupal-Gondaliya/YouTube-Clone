@@ -53,4 +53,22 @@ export const getAllVideos = async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-};;
+};
+
+// Get a single video by ID
+export const getVideo = async (req, res) => {
+  try {
+    const video = await Video.findById(req.params.id)
+      .populate("uploader", "username avatar") 
+      .populate("channelId", "channelName subscribers"); 
+    
+    if (!video) return res.status(404).json({ message: "Video not found" });
+
+    video.views += 1;
+    await video.save();
+
+    res.status(200).json(video);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
