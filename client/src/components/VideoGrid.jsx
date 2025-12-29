@@ -34,15 +34,4 @@ const VideoGrid = ({ video, userData }) => {
     </Link>
   );
 };
-// {
-//   channel.owner?.avatar ? (
-//     <img
-//       src={channel.owner.avatar}
-//       alt={channel.owner.username}
-//       className="w-full h-full object-cover"
-//     />
-//   ) : (
-//   <span>{channel.owner?.username?.charAt(0).toUpperCase()}</span>
-// )
-// }
 export default VideoGrid;
