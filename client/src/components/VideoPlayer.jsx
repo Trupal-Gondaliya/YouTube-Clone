@@ -142,7 +142,7 @@ const VideoPlayer = () => {
 
                 {/* 4. Description Box */}
                 <div className="bg-gray-100 rounded-xl p-3 mt-4 text-sm hover:bg-red-50 cursor-pointer transition">
-                    <div className="font-bold mb-1">{video.views} views</div>
+                    <div className="font-bold mb-1">{video.views.length} views</div>
                     <p className="whitespace-pre-wrap">{video.description}</p>
                 </div>
 
