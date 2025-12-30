@@ -57,15 +57,21 @@ export const getAllVideos = async (req, res) => {
 
 // Get a single video by ID
 export const getVideo = async (req, res) => {
+  const id = req.params.id; 
+  const userId = req.user?.id;
   try {
-    const video = await Video.findById(req.params.id)
+    // 1. Only update if the user is logged in
+    if (userId) {
+      await Video.findByIdAndUpdate(id, {
+        $addToSet: { views: userId } // Only adds unique IDs
+      });
+    }
+
+    const video = await Video.findById(id)
       .populate("uploader", "username avatar")
       .populate("channelId", "channelName subscribers");
 
     if (!video) return res.status(404).json({ message: "Video not found" });
-
-    video.views += 1;
-    await video.save();
 
     res.status(200).json(video);
   } catch (err) {
