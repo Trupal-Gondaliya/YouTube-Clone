@@ -59,9 +59,9 @@ export const getAllVideos = async (req, res) => {
 export const getVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id)
-      .populate("uploader", "username avatar") 
-      .populate("channelId", "channelName subscribers"); 
-    
+      .populate("uploader", "username avatar")
+      .populate("channelId", "channelName subscribers");
+
     if (!video) return res.status(404).json({ message: "Video not found" });
 
     video.views += 1;
@@ -70,5 +70,33 @@ export const getVideo = async (req, res) => {
     res.status(200).json(video);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+export const likeVideo = async (req, res) => {
+  const userId = req.user.id;
+  const videoId = req.params.id;
+  try {
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { likes: userId },
+      $pull: { dislikes: userId }
+    });
+    res.status(200).json("The video has been liked.");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+export const dislikeVideo = async (req, res) => {
+  const userId = req.user.id;
+  const videoId = req.params.id;
+  try {
+    await Video.findByIdAndUpdate(videoId, {
+      $addToSet: { dislikes: userId },
+      $pull: { likes: userId }
+    });
+    res.status(200).json("The video has been disliked.");
+  } catch (err) {
+    res.status(500).json(err);
   }
 };

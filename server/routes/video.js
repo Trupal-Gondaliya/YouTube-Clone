@@ -1,5 +1,5 @@
 import express from "express";
-import { addVideo, updateVideo, deleteVideo, getAllVideos } from "../controllers/video.js";
+import { addVideo, updateVideo, deleteVideo, getAllVideos, getVideo, likeVideo, dislikeVideo } from "../controllers/video.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
@@ -8,4 +8,8 @@ router.post("/", verifyToken, addVideo); // Create
 router.put("/:id", verifyToken, updateVideo); // Update 
 router.delete("/:id", verifyToken, deleteVideo); // Delete 
 router.get("/", getAllVideos); // Read for Home Page 
+router.get("/find/:id", getVideo); //Read video
+router.put("/like/:id", verifyToken, likeVideo);
+router.put("/dislike/:id", verifyToken, dislikeVideo);
+
 export default router;
