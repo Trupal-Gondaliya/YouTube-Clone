@@ -5,11 +5,13 @@ import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "reac
 import { PiShareFatThin } from "react-icons/pi";
 import { TfiDownload } from "react-icons/tfi";
 import RecommendedVideoCard from '../components/RecommendedVideoCard.jsx';
+import { useSelector } from 'react-redux';
 
 const VideoPlayer = () => {
     const { id } = useParams();
     const [video, setVideo] = useState(null);
     const [recommended, setRecommended] = useState([]);
+    const { currentUser } = useSelector((state) => state.user);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,6 +30,46 @@ const VideoPlayer = () => {
     }, [id]);
 
     if (!video) return <div className="p-10">Loading...</div>;
+
+    const handelLike = async () => {
+        if (!currentUser) return alert("Please login to like videos!!");
+        try {
+            await axiosInstance.put(`/videos/like/${id}`);
+            setVideo((prev) => {
+                const isLiked = prev.likes.includes(currentUser._id);
+                return {
+                    ...prev,
+                    // If already liked, remove it; else add it
+                    likes: isLiked
+                        ? prev.likes.filter((id) => id !== currentUser._id)
+                        : [...prev.likes, currentUser._id],
+                    // Always remove from dislikes if liking
+                    dislikes: prev.dislikes.filter((id) => id !== currentUser._id),
+                };
+            });
+        } catch (err) {
+            console.error("Error liking video", err);
+        }
+    }
+
+    const handelDislike = async () => {
+        if(!currentUser) return alert("Please login to dislike videos!!");
+        try {
+            await axiosInstance.put(`videos/dislike/${id}`);
+            setVideo((prev) => {
+                const isDislike = prev.dislikes.includes(currentUser._id);
+                return {
+                    ...prev,
+                    dislikes : isDislike 
+                        ? prev.dislikes.filter((id) => id != currentUser._id)
+                        : [...prev.dislikes, currentUser._id],
+                    likes: prev.likes.filter((id) => id != currentUser._id),
+                }; 
+            });
+        } catch (err) {
+            console.error("Error disliking video", err);
+        }
+    }
 
     return (
         <div className="flex flex-col lg:flex-row gap-6 p-4 lg:px-12 min-h-screen">
@@ -49,7 +91,7 @@ const VideoPlayer = () => {
                 {/* 3. Channel Info & Buttons */}
                 <div className="flex flex-wrap items-center justify-between gap-4 mt-3">
                     <div className="flex items-center gap-3">
-                       <div className='flex justify-between items-center gap-2'>
+                        <div className='flex justify-between items-center gap-2'>
                             <div className="w-9 h-9 bg-purple-700 rounded-full flex items-center justify-center text-white text-sm font-bold">
                                 {video.uploader?.avatar ? (
                                     <img
@@ -73,11 +115,20 @@ const VideoPlayer = () => {
 
                     <div className="flex items-center gap-2">
                         <div className="flex items-center bg-gray-100 rounded-full overflow-hidden">
-                            <button className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 border-r border-gray-300">
-                                <AiOutlineLike className="text-xl" /> {video.likes}
+                            <button onClick={handelLike} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 border-r border-gray-300">
+                                {video.likes.includes(currentUser?._id) ? (
+                                    <AiFillLike className="text-xl text-blue-600" />
+                                ) : (
+                                    <AiOutlineLike className="text-xl" />
+                                )}
+                                {video.likes?.length}
                             </button>
-                            <button className="px-4 py-2 hover:bg-gray-200">
-                                <AiOutlineDislike className="text-xl" />
+                            <button onClick={handelDislike} className="px-4 py-2 hover:bg-gray-200">
+                                {video.dislikes.includes(currentUser?._id) ? (
+                                    <AiFillDislike className='text-xl text-blue-600'/>
+                                ) : (
+                                    <AiOutlineDislike className="text-xl" />
+                                )}
                             </button>
                         </div>
                         <button className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200">
