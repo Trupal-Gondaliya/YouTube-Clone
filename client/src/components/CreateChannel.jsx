@@ -12,8 +12,10 @@ const CreateChannel = ({ setOpen }) => {
     const [bannerFile, setBannerFile] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handleCreate = async () => {
+        setLoading(true);
         if (!channelName) return alert("Channel name is required!");
         let bannerUrl = "";
         try {
@@ -41,6 +43,8 @@ const CreateChannel = ({ setOpen }) => {
         } catch (err) {
             console.error("Creation failed:", err);
             alert("Something went wrong. Check console.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -64,7 +68,9 @@ const CreateChannel = ({ setOpen }) => {
                 <div className="flex justify-end gap-3">
                     <button onClick={() => setOpen(false)}
                         className=" w-1/2 bg-red-500 text-white py-2 rounded font-bold hover:bg-red-800 disabled:bg-gray-400">Cancel</button>
-                    <button onClick={handleCreate} className="w-1/2 bg-blue-600 text-white px-4 py-2 rounded">Create</button>
+                    <button disabled={loading} onClick={handleCreate} className="w-1/2 bg-blue-600 text-white px-4 py-2 rounded">
+                        {loading ? "Creating..." : "Create"}
+                    </button>
                 </div>
             </div>
         </div>

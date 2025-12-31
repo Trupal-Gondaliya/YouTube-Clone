@@ -98,7 +98,7 @@ const VideoPlayer = () => {
                                         <img
                                             src={video.uploader?.avatar}
                                             alt={video.uploader?.username}
-                                            className="w-full h-full object-cover"
+                                            className="w-full h-full object-cover rounded-full"
                                         />
                                     ) : (
                                         <span>{video.uploader?.username?.charAt(0).toUpperCase()}</span>

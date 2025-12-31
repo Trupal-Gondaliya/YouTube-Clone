@@ -39,11 +39,12 @@ const Header = ({ toggleSidebar }) => {
 
     // function to view channel page
     const viewChannelPage = () => {
-        if (currentUser.channels && currentUser.channels.length > 0) {
+        if (currentUser?.channels && currentUser.channels.length > 0) {
             // Navigate to the first channel in their list
             navigate(`/channel/${currentUser.channels[0]}`);
         } else {
             alert("You don't have a channel yet. Create one first!");
+            setOpenChannelModal(true);
         }
     }
 
@@ -134,7 +135,7 @@ const Header = ({ toggleSidebar }) => {
                                     <img
                                         src={currentUser.avatar}
                                         alt={currentUser.username}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover rounded-full"
                                     />
                                 ) : (
                                     <span>{getFirstLetter(currentUser.username)}</span>

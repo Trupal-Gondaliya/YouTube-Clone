@@ -19,7 +19,7 @@ const VideoGrid = ({ video, userData }) => {
             <img
               src={avatarSrc}
               alt="avtar"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-full"
             />
           ) : (
             <span>{displayName.charAt(0).toUpperCase()}</span>
