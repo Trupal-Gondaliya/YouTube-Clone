@@ -17,7 +17,17 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    if (error.response && (error.response.status === 403 || error.response.status === 401)) {
+            // 1. Clear Redux/Local Storage
+            localStorage.removeItem("access_token"); //if using redux-persist
+            
+            // 2. Notify the user
+            alert("Your session has expired. Please login again.");
+            
+            // 3. Redirect to login page
+            window.location.href = "/login";
+        }
+        return Promise.reject(error);
   }
 );
 
