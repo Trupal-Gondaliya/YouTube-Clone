@@ -17,6 +17,8 @@ export const addVideo = async (req, res) => {
 export const updateVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
+    if (!video) return res.status(404).json({ message: "Video not found" });
+    
     if (req.user.id === video.uploader.toString()) {
       const updatedVideo = await Video.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
       res.status(200).json(updatedVideo);
@@ -31,7 +33,15 @@ export const updateVideo = async (req, res) => {
 export const deleteVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
+    if(!video) return res.status(404).json("Video not found");
+
     if (req.user.id === video.uploader.toString()) {
+
+      // Remove video from tha channel 
+      await Channel.findByIdAndUpdate(video.channelId, {
+        $pull : { videos: req.params.id }
+      })
+
       await Video.findByIdAndDelete(req.params.id);
       res.status(200).json("Video deleted.");
     } else {
