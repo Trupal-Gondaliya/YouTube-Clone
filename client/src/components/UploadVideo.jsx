@@ -47,7 +47,7 @@ const UploadVideo = () => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const categories = [
-        "Music", "Gaming", "Education", "Technology", "Film", "Animation",
+        "Lord", "Music", "Gaming", "Education", "Technology", "Film", "Animation",
         "Comedy", "Entertainment", "Vlogs", "Science", "News", "Politics",
         "Travel", "Pets", "Animals", "Health", "Sports", "Yoga", "Beauty", "Food",
         "Art", "Motivation", "Other"

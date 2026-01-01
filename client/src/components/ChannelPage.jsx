@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import EditChannel from './EditChannel.jsx';
 import { useDispatch } from 'react-redux';
 import { updateUserSuccess } from '../redux/userSlice';
+import { Link } from 'react-router-dom';
 
 const ChannelPage = () => {
     const { id } = useParams();
@@ -92,12 +93,17 @@ const ChannelPage = () => {
                                 className="bg-red-100 text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-200 transition">
                                 Delete Channel
                             </button>
+                            <Link to={`/channel/${channel._id}/manage`}>
+                                <button className="bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition">
+                                    Manage videos
+                                </button>
+                            </Link>
                         </div>
                     )}
                     {!isOwner && (
                         <button className="bg-black text-white px-4 py-2 rounded-full font-medium mt-4 hover:bg-gray-800">
-                                Subscribe
-                            </button>
+                            Subscribe
+                        </button>
                     )}
                 </div>
                 {openEdit && <EditChannel setOpen={setOpenEdit} channel={channel} />}
