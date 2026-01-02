@@ -133,3 +133,13 @@ export const searchVideos = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const getByCategory = async (req, res) => {
+  const category = req.query.cat;
+  try {
+    const videos = await Video.find({ category: category }).limit(20);
+    res.status(200).json(videos);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};

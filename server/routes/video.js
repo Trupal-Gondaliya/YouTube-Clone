@@ -1,5 +1,5 @@
 import express from "express";
-import { addVideo, updateVideo, deleteVideo, getAllVideos, getVideo, likeVideo, dislikeVideo, searchVideos } from "../controllers/video.js";
+import { addVideo, updateVideo, deleteVideo, getAllVideos, getVideo, likeVideo, dislikeVideo, searchVideos, getByCategory } from "../controllers/video.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { optionalVerifyToken } from "../middleware/optionalVerifyToken.js";
 
@@ -13,5 +13,6 @@ router.get("/find/:id", optionalVerifyToken, getVideo); //Read video
 router.put("/like/:id", verifyToken, likeVideo);
 router.put("/dislike/:id", verifyToken, dislikeVideo);
 router.get("/search", searchVideos);
+router.get("/category", getByCategory);
 
 export default router;
