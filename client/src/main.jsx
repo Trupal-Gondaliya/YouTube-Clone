@@ -12,6 +12,7 @@ import ChannelPage from './components/ChannelPage.jsx'
 import UploadVideo from './components/UploadVideo.jsx'
 import VideoPlayer from './components/VideoPlayer.jsx'
 import ManageVideo from './components/ManageVideo.jsx'
+import SearchPage from './components/SearchPage.jsx'
 
 const Router = createBrowserRouter([
   {
@@ -24,7 +25,8 @@ const Router = createBrowserRouter([
       { path: "/channel/:id", element: <ChannelPage />},
       {path: "/upload", element: <UploadVideo />},
       {path: "/video/:id", element: <VideoPlayer />},
-      {path: "/channel/:id/manage", element: <ManageVideo />}
+      {path: "/channel/:id/manage", element: <ManageVideo />},
+      {path: "/search", element: <SearchPage />}
     ],
   },
 ])

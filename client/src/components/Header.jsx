@@ -7,7 +7,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import { IoMdNotificationsOutline } from "react-icons/io";
@@ -23,6 +23,7 @@ const Header = ({ toggleSidebar }) => {
     const [openChannelModal, setOpenChannelModal] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [searchInput, setSearchInput] = useState("");
 
     // logout function
     const handleLogout = () => {
@@ -47,6 +48,12 @@ const Header = ({ toggleSidebar }) => {
             setOpenChannelModal(true);
         }
     }
+
+    const handleSearchClick = (e) => {
+        if (searchInput.trim()) {
+            navigate(`/search?q=${searchInput}`);
+        }
+    };
 
     const handleUploadClick = () => {
         if (!currentUser) {
@@ -79,13 +86,14 @@ const Header = ({ toggleSidebar }) => {
             <div className="flex items-center justify-center w-1/2 gap-4 group">
                 <div className="flex items-center flex-1 max-w-150">
                     <div className="flex items-center flex-1 h-10 px-4 bg-white border border-gray-300 rounded-l-full focus-within:border-blue-500 focus-within:shadow-inner">
-                        <AiOutlineSearch className="mr-2 text-gray-500 hidden group-focus-within:block" />
                         <input
+                            onChange={e => setSearchInput(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSearchClick(e)}
                             type="text"
                             placeholder="Search"
                             className="w-full bg-transparent outline-none text-base" />
                     </div>
-                    <button className="cursor-pointer flex items-center justify-center w-16 h-10 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200">
+                    <button onClick={handleSearchClick} className="cursor-pointer flex items-center justify-center w-16 h-10 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200">
                         <AiOutlineSearch className="text-2xl" />
                     </button>
                 </div>
