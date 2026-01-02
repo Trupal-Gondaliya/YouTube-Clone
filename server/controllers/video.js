@@ -116,3 +116,20 @@ export const dislikeVideo = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const searchVideos = async (req, res) => {
+  const query = req.query.q;
+  try {
+    // Finds videos where title matches the query 
+    const videos = await Video.find({
+      title: { $regex: query, $options: "i" },
+    })
+    .populate("uploader", "username avatar") 
+    .populate("channelId", "channelName")
+    .limit(40);
+    
+    res.status(200).json(videos);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
