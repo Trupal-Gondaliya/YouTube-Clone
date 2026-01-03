@@ -6,6 +6,7 @@ import { PiShareFatThin } from "react-icons/pi";
 import { TfiDownload } from "react-icons/tfi";
 import RecommendedVideoCard from '../components/RecommendedVideoCard.jsx';
 import { useSelector } from 'react-redux';
+import Comments from './Comments.jsx';
 
 const VideoPlayer = () => {
     const { id } = useParams();
@@ -150,7 +151,8 @@ const VideoPlayer = () => {
 
                 {/* 5. Comment Section */}
                 <div className="mt-6">
-                    <h2 className="text-lg font-bold mb-4">Comments</h2>
+                    {/* <h2 className="text-lg font-bold mb-4">Comments</h2> */}
+                    <Comments videoId={video._id}/>
                 </div>
             </div>
 
