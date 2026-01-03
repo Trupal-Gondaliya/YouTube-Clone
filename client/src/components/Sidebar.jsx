@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // Ensure all these icons are imported in your project
-import { MdExpandLess, MdExpandMore, MdOutlineSubscriptions, MdOutlineFeedback } from "react-icons/md";
+import { MdExpandLess, MdExpandMore, MdOutlineSubscriptions, MdOutlineFeedback, MdOutlinePlaylistPlay, MdOutlineWatchLater } from "react-icons/md";
 import { SiYoutubeshorts, SiYoutubegaming, SiYoutubemusic, SiYoutubekids } from "react-icons/si";
 import { IoMdHome, IoIosHelpCircleOutline } from "react-icons/io";
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -13,10 +13,11 @@ import { FaRegNewspaper } from "react-icons/fa";
 import { GoTrophy } from "react-icons/go";
 import { SlGraduation } from "react-icons/sl";
 import { PiCoatHanger } from "react-icons/pi";
-import { AiFillYoutube } from "react-icons/ai";
-import { CiFlag1 } from "react-icons/ci";
+import { AiFillYoutube, AiOutlineLike } from "react-icons/ai";
+import { CiFlag1, CiYoutube } from "react-icons/ci";
 import { HiMenu } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SidebarItem = ({ icon, label, isOpen }) => (
     <div className={`flex items-center rounded-lg cursor-pointer transition-colors
@@ -30,6 +31,9 @@ const SidebarItem = ({ icon, label, isOpen }) => (
 );
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
+
+    const { currentUser } = useSelector(state => state.user);
+
     // State to handle the "Show More / Show Less" toggle in the Explore section
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -61,7 +65,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
                 {/* SIDEBAR HEADER: Only visible when open (contains Logo and Burger) */}
                 {isOpen && (
-                    <div className="flex items-center gap-4 h-16 px-1 top-0 bg-white z-10">
+                    <div className="sticky flex items-center gap-4 h-16 px-1 top-0 bg-white z-10">
                         <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 rounded-full text-2xl">
                             <HiMenu />
                         </button>
@@ -73,26 +77,48 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 )}
 
                 {/* CORE NAVIGATION SECTION */}
-                <Link to="/"><SidebarItem icon={<IoMdHome />} label="Home" isOpen={isOpen} active className="top-14"/></Link>
+                <Link to="/"><SidebarItem icon={<IoMdHome />} label="Home" isOpen={isOpen} active className="top-14" /></Link>
                 <SidebarItem icon={<SiYoutubeshorts />} label="Shorts" isOpen={isOpen} />
                 <SidebarItem icon={<MdOutlineSubscriptions />} label="Subscriptions" isOpen={isOpen} />
 
                 <hr className={`my-3 border-gray-200 ${!isOpen && "hidden"}`} />
 
-                <SidebarItem icon={<FaRegCircleUser />} label="You" isOpen={isOpen} />
-
-                {isOpen && (
-                    <>
-                        <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
-                        <hr className="my-3 border-gray-200" />
-                        <div className="px-3 py-1">
-                            <p className="text-sm leading-tight">Sign in to like videos, comment, and subscribe.</p>
-                            <button className="mt-3 flex items-center gap-2 text-blue-600 border border-gray-300 px-3 py-1.5 rounded-full hover:bg-blue-100/50 font-medium text-sm">
-                                <FaRegCircleUser className="text-xl" /> Sign in
-                            </button>
+                {currentUser && isOpen ? (
+                    <div>
+                        <div className="flex items-center rounded-lg cursor-pointer transition-colors flex-row gap-5 p-2 px-3 hover:bg-gray-100">
+                            <button className="font-bold">You &gt;</button>
                         </div>
+                        <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
+                        <SidebarItem icon={<MdOutlinePlaylistPlay />} label="Playlists" isOpen={isOpen} />
+                        <SidebarItem icon={<CiYoutube />} label="Your videos" isOpen={isOpen} />
+                        <SidebarItem icon={<SlGraduation />} label="Your courses" isOpen={isOpen} />
+                        <SidebarItem icon={<MdOutlineWatchLater />} label="Watch later" isOpen={isOpen} />
+                        <SidebarItem icon={<AiOutlineLike />} label="Liked videos" isOpen={isOpen} />
+
+                        <hr className="my-3 border-gray-200" />
+                        <div className="flex items-center rounded-lg cursor-pointer transition-colors flex-row gap-5 p-2 px-3 hover:bg-gray-100">
+                            <button className="font-bold">Subsriptions &gt;</button>
+                            {/* We will add subscribe list */}
+                        </div>
+                    </div>
+                ) : (
+                    <>
+                        <SidebarItem icon={<FaRegCircleUser />} label="You" isOpen={isOpen} />
+                        {isOpen && (
+                            <>
+                                <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
+                                <hr className="my-3 border-gray-200" />
+                                <div className="px-3 py-1">
+                                    <p className="text-sm leading-tight">Sign in to like videos, comment, and subscribe.</p>
+                                    <button className="mt-3 flex items-center gap-2 text-blue-600 border border-gray-300 px-3 py-1.5 rounded-full hover:bg-blue-100/50 font-medium text-sm">
+                                        <FaRegCircleUser className="text-xl" /> Sign in
+                                    </button>
+                                </div>
+                            </>
+                        )}
                     </>
-                )}
+                )
+                }
 
                 <hr className="my-3 border-gray-200" />
 
