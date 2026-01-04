@@ -5,14 +5,16 @@ import { AiOutlineLike, AiOutlineDislike, AiFillLike, AiFillDislike } from "reac
 import { PiShareFatThin } from "react-icons/pi";
 import { TfiDownload } from "react-icons/tfi";
 import RecommendedVideoCard from '../components/RecommendedVideoCard.jsx';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import Comments from './Comments.jsx';
+import { updateUserSuccess } from '../redux/userSlice.js';
 
 const VideoPlayer = () => {
     const { id } = useParams();
     const [video, setVideo] = useState(null);
     const [recommended, setRecommended] = useState([]);
     const { currentUser } = useSelector((state) => state.user);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -90,6 +92,13 @@ const VideoPlayer = () => {
                     }
                 };
             });
+            const isCurrentlySubscribed = currentUser.subscribedUsers?.includes(targetChannelId);
+
+            const updatedList = isCurrentlySubscribed
+                ? currentUser.subscribedUsers.filter(id => id !== targetChannelId)
+                : [...(currentUser.subscribedUsers || []), targetChannelId];
+
+            dispatch(updateUserSuccess({ subscribedUsers: updatedList }));
         } catch (err) {
             console.error("Error Subscribing Channel", err);
         }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Ensure all these icons are imported in your project
 import { MdExpandLess, MdExpandMore, MdOutlineSubscriptions, MdOutlineFeedback, MdOutlinePlaylistPlay, MdOutlineWatchLater } from "react-icons/md";
 import { SiYoutubeshorts, SiYoutubegaming, SiYoutubemusic, SiYoutubekids } from "react-icons/si";
@@ -18,6 +18,7 @@ import { CiFlag1, CiYoutube } from "react-icons/ci";
 import { HiMenu } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import axiosInstance from "../utils/axiosInstance";
 
 const SidebarItem = ({ icon, label, isOpen }) => (
     <div className={`flex items-center rounded-lg cursor-pointer transition-colors
@@ -32,7 +33,22 @@ const SidebarItem = ({ icon, label, isOpen }) => (
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
 
+    const [subscriptions, setSubscriptions] = useState([]);
+
     const { currentUser } = useSelector(state => state.user);
+
+    useEffect(() => {
+        const fetchSubscription = async () => {
+            if (!currentUser) return alert("Please login to Subscribe");
+            try {
+                const res = await axiosInstance.get(`/channels/subscriptions/${currentUser._id}`)
+                setSubscriptions(res.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchSubscription();
+    }, [currentUser?._id, currentUser?.subscribedUsers]);
 
     // State to handle the "Show More / Show Less" toggle in the Explore section
     const [isExpanded, setIsExpanded] = useState(false);
@@ -85,7 +101,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
                 {currentUser && isOpen ? (
                     <div>
-                        <div className="flex items-center rounded-lg cursor-pointer transition-colors flex-row gap-5 p-2 px-3 hover:bg-gray-100">
+                        <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100">
                             <button className="font-bold">You &gt;</button>
                         </div>
                         <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
@@ -96,9 +112,37 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         <SidebarItem icon={<AiOutlineLike />} label="Liked videos" isOpen={isOpen} />
 
                         <hr className="my-3 border-gray-200" />
-                        <div className="flex items-center rounded-lg cursor-pointer transition-colors flex-row gap-5 p-2 px-3 hover:bg-gray-100">
-                            <button className="font-bold">Subsriptions &gt;</button>
-                            {/* We will add subscribe list */}
+
+                        <div className="p-2 px-3">
+                            <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100">
+                                <button className="font-bold">Subscriptions &gt;</button>
+                            </div>
+                            {<div className="flex flex-col gap-1">
+                                {subscriptions.map((channel) => (
+                                    <Link
+                                        to={`/channel/${channel._id}`}
+                                        key={channel._id}
+                                        className="flex items-center gap-4 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                                    >
+                                        <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 shrink-0">
+                                            {channel.owner?.avatar ? (
+                                                <img src={channel.owner.avatar} alt="" className="w-full h-full object-cover" />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-purple-700 text-white text-xs">
+                                                    {channel.channelName.charAt(0)}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <span className="text-sm font-medium truncate">
+                                            {channel.channelName}
+                                        </span>
+                                    </Link>
+                                ))}
+                                {subscriptions.length === 0 && currentUser && isOpen && (
+                                    <p className="text-xs text-gray-500 px-2">No subscriptions yet.</p>
+                                )}
+                            </div>}
                         </div>
                     </div>
                 ) : (
