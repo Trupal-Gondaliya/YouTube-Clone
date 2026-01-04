@@ -112,3 +112,19 @@ export const subscriberChannel = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const subscribeChannelList = async (req, res) => {
+  try {
+    const channels = await Channel.find({
+      subscribers: req.params.id,
+    }).select("channelName channelBanner owner");
+    
+    const populatedChannels = await Channel.find({
+        subscribers: req.params.id,
+      }).populate("owner", "avatar username");
+    
+    res.status(200).json(populatedChannels);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
