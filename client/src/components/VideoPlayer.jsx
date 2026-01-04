@@ -56,7 +56,7 @@ const VideoPlayer = () => {
     const handelDislike = async () => {
         if (!currentUser) return alert("Please login to dislike videos!!");
         try {
-            await axiosInstance.put(`videos/dislike/${id}`);
+            await axiosInstance.put(`/videos/dislike/${id}`);
             setVideo((prev) => {
                 const isDislike = prev.dislikes.includes(currentUser._id);
                 return {
@@ -69,6 +69,29 @@ const VideoPlayer = () => {
             });
         } catch (err) {
             console.error("Error disliking video", err);
+        }
+    }
+
+    const handelSubscribe = async () => {
+        if (!currentUser) return alert("Please login to subscribe to the channel!!");
+        const targetChannelId = video.channelId?._id || video.channelId;
+        try {
+            await axiosInstance.put(`/channels/subscribe/${targetChannelId}`);
+            setVideo((prev) => {
+                const currentSubscribers = prev.channelId?.subscribers || [];
+                const isSubscribed = currentSubscribers.includes(currentUser._id);
+                return {
+                    ...prev,
+                    channelId: {
+                        ...prev.channelId,
+                        subscribers: isSubscribed
+                            ? currentSubscribers.filter((id) => id !== currentUser._id)
+                            : [...currentSubscribers, currentUser._id]
+                    }
+                };
+            });
+        } catch (err) {
+            console.error("Error Subscribing Channel", err);
         }
     }
 
@@ -111,8 +134,14 @@ const VideoPlayer = () => {
                                 </div>
                             </div>
                         </Link>
-                        <button className="bg-black text-white px-4 py-2 rounded-full font-medium ml-4 hover:bg-gray-800">
-                            Subscribe
+                        <button onClick={handelSubscribe}
+                            className={`${video.channelId?.subscribers?.includes(currentUser?._id)
+                                ? "bg-gray-200 text-black"
+                                : "bg-black text-white"
+                                } px-4 py-2 rounded-full font-medium ml-4 hover:opacity-80 transition`}>
+                            {video.channelId?.subscribers?.includes(currentUser?._id)
+                                ? "Subscribed"
+                                : "Subscribe"}
                         </button>
                     </div>
 
@@ -152,7 +181,7 @@ const VideoPlayer = () => {
                 {/* 5. Comment Section */}
                 <div className="mt-6">
                     {/* <h2 className="text-lg font-bold mb-4">Comments</h2> */}
-                    <Comments videoId={video._id}/>
+                    <Comments videoId={video._id} />
                 </div>
             </div>
 
