@@ -89,3 +89,26 @@ export const deleteChannel = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const subscriberChannel = async (req, res) => {
+  const userId = req.user.id;
+  const channelId = req.params.id;
+  try {
+    const channel = await Channel.findById(channelId);
+    if (!channel) return res.status(404).json("Channel not found");
+
+    if (channel.subscribers.includes(userId)) {
+      await Channel.findByIdAndUpdate(channelId, { 
+        $pull: { subscribers: userId }
+      });
+      res.status(200).json("Unsubscribed successfully");
+    } else {
+      await Channel.findByIdAndUpdate(channelId, {
+        $addToSet: {subscribers : userId}
+      });
+      res.status(200).json("Subscribed successfully")
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
