@@ -7,6 +7,9 @@ import EditChannel from './EditChannel.jsx';
 import { useDispatch } from 'react-redux';
 import { updateUserSuccess } from '../redux/userSlice';
 import { Link } from 'react-router-dom';
+import { FaXmark } from "react-icons/fa6";
+import { CiYoutube } from "react-icons/ci";
+import { BiUserVoice } from "react-icons/bi";
 
 const ChannelPage = () => {
     const { id } = useParams();
@@ -14,6 +17,7 @@ const ChannelPage = () => {
     const { currentUser } = useSelector(state => state.user);
     const [openEdit, setOpenEdit] = useState(false);
     const dispatch = useDispatch();
+    const [isExpandedDesc, setIsExpandedDesc] = useState(false);
 
     useEffect(() => {
         const fetchChannel = async () => {
@@ -46,6 +50,37 @@ const ChannelPage = () => {
         }
     };
 
+    const handelSubscribe = async () => {
+        if (!currentUser) return alert("Please login to subscribe to the channel!!");
+        const targetChannelId = channel._id || channel.id;
+        try {
+            await axiosInstance.put(`/channels/subscribe/${targetChannelId}`);
+            setChannel((prev) => {
+                const currentSubscribers = channel.subscribers || [];
+                const isSubscribed = currentSubscribers.includes(currentUser._id);
+                return {
+                    ...prev,
+                    subscribers: isSubscribed
+                        ? currentSubscribers.filter((id) => id !== currentUser._id)
+                        : [...currentSubscribers, currentUser._id]
+                };
+            });
+            const isCurrentlySubscribed = currentUser.subscribedUsers?.includes(targetChannelId);
+
+            const updatedList = isCurrentlySubscribed
+                ? currentUser.subscribedUsers.filter(id => id !== targetChannelId)
+                : [...(currentUser.subscribedUsers || []), targetChannelId];
+
+            dispatch(updateUserSuccess({ subscribedUsers: updatedList }));
+        } catch (err) {
+            console.error("Error Subscribing Channel", err);
+        }
+    }
+
+    const descriptionLimit = 80;
+
+    const displayText = channel.description?.slice(0, descriptionLimit);
+
     return (
         <div className="flex flex-col w-full min-h-screen bg-white">
             {/* 1. Channel Banner */}
@@ -74,11 +109,53 @@ const ChannelPage = () => {
                         <span>{channel.owner?.username?.charAt(0).toUpperCase()}</span>
                     )}
                 </div>
-                <div className="flex flex-col items-center md:items-start">
+                <div className="flex flex-col items-center md:items-start gap-2">
                     <h1 className="text-3xl font-bold">{channel.channelName}</h1>
-                    <p className="text-gray-600 font-medium">@{channel.channelName.replace(/\s+/g, '').toLowerCase()}</p>
-                    <p className="text-gray-500 text-sm mt-1">{channel.subscribers} subscribers • {channel.videos?.length || 0} videos</p>
-                    <p className="text-gray-700 mt-2 max-w-2xl text-center md:text-left">{channel.description}</p>
+                    <p className="text-gray-600 font-medium"><span className='text-black'>@{channel.channelName.replace(/\s+/g, '').toLowerCase()}</span> • {channel.subscribers.length || 0} subscribers • {channel.videos.length} videos</p>
+                    <div className="flex">
+                        <p className="text-gray-700 mt-2 max-w-2xl text-center md:text-left">
+                            {displayText}
+                        </p>
+                        <button
+                            onClick={() => setIsExpandedDesc(true)}
+                            className="text-sm font-bold mt-2 cursor-pointer hover:text-gray-600"
+                        >
+                            ...more
+                        </button>
+                    </div>
+                    {isExpandedDesc && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setIsExpandedDesc(false)}>
+                            <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full relative h-[90%] flex flex-col overflow-hidden">
+                                <div className="flex justify-between items-center">
+                                    <p className="text-2xl font-bold">{channel.channelName}</p>
+                                    <button
+                                        onClick={() => setIsExpandedDesc(false)}
+                                        className="text-2xl p-3 text-black rounded-md hover:bg-gray-300 hover:rounded-full transition-colors"
+                                    >
+                                        <FaXmark />
+                                    </button>
+                                </div>
+                                <div>
+                                    <p className="mt-3 text-2xl font-bold">Description</p>
+                                    <p className="text-gray-700 whitespace-pre-wrap">
+                                        {channel.description || "Description..."}
+                                    </p>
+                                </div>
+                                <p className="my-3 text-2xl font-bold">More info</p>
+                                <div className='flex flex-col gap-4 '>
+
+                                    <div className='flex items-center gap-3'>
+                                        <BiUserVoice className='text-3xl' />
+                                        <p className="text-gray-700">{channel.subscribers.length} subscribers</p>
+                                    </div>
+                                    <div className='flex items-center gap-3'>
+                                        <CiYoutube className='text-3xl' />
+                                        <p>{channel.videos.length} videos</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Action Buttons for Owner */}
                     {isOwner && (
@@ -101,8 +178,14 @@ const ChannelPage = () => {
                         </div>
                     )}
                     {!isOwner && (
-                        <button className="bg-black text-white px-4 py-2 rounded-full font-medium mt-4 hover:bg-gray-800">
-                            Subscribe
+                        <button onClick={handelSubscribe}
+                            className={`${channel.subscribers?.includes(currentUser?._id)
+                                ? "bg-gray-200 text-black"
+                                : "bg-black text-white"
+                                } px-4 py-2 rounded-full font-medium mt-4 hover:opacity-80 transition`}>
+                            {channel.subscribers?.includes(currentUser?._id)
+                                ? "Subscribed"
+                                : "Subscribe"}
                         </button>
                     )}
                 </div>
