@@ -15,6 +15,7 @@ const VideoPlayer = () => {
     const [recommended, setRecommended] = useState([]);
     const { currentUser } = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    const [isExpandedDesc, setIsExpandedDesc] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -104,6 +105,13 @@ const VideoPlayer = () => {
         }
     }
 
+    const descriptionLimit = 200;
+    const isLongDescription = video.description?.length > descriptionLimit;
+
+    const displayText = isExpandedDesc
+        ? video.description
+        : video.description?.slice(0, descriptionLimit);
+
     return (
         <div className="flex flex-col lg:flex-row gap-6 p-4 lg:px-12 min-h-screen">
             {/* LEFT SIDE: Video & Details */}
@@ -139,7 +147,7 @@ const VideoPlayer = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-md">{video.channelId?.channelName || "Channel Name"}</h3>
-                                    <p className="text-xs text-gray-500">{video.channelId?.subscribers + " subscribers"}</p>
+                                    <p className="text-xs text-gray-500">{video.channelId?.subscribers.length + " subscribers"}</p>
                                 </div>
                             </div>
                         </Link>
@@ -183,8 +191,22 @@ const VideoPlayer = () => {
 
                 {/* 4. Description Box */}
                 <div className="bg-gray-100 rounded-xl p-3 mt-4 text-sm hover:bg-red-50 cursor-pointer transition">
-                    <div className="font-bold mb-1">{video.views.length} views</div>
-                    <p className="whitespace-pre-wrap">{video.description}</p>
+                    <div className="flex gap-2 text-sm font-bold mb-1">
+                        <span>{video.views?.length} views</span>
+                        <span>{new Date(video.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <p className="whitespace-pre-wrap text-sm text-gray-800">
+                        {displayText}
+                        {isLongDescription && !isExpandedDesc && "..."}
+                    </p>
+                    {isLongDescription && (
+                        <button
+                            onClick={() => setIsExpandedDesc(!isExpandedDesc)}
+                            className="text-sm font-bold mt-2 cursor-pointer hover:text-gray-600"
+                        >
+                            {isExpandedDesc ? "Show less" : "...more"}
+                        </button>
+                    )}
                 </div>
 
                 {/* 5. Comment Section */}
