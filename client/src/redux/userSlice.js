@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const userSlice = createSlice({
     name: 'user',
-    initialState: { currentUser: null, loading: false, error: false },
+    initialState: { currentUser: null, loading: false, error: false, darkMode: false },
     reducers: {
         loginStart: (state) => { state.loading = true; },
         loginSuccess: (state, action) => {
@@ -22,8 +22,11 @@ const userSlice = createSlice({
             state.loading = false;
             state.currentUser = { ...state.currentUser, ...action.payload };
         },
+        toggleTheme: (state) => {
+            state.darkMode = !state.darkMode;
+        },  
     }
 })
 
-export const { loginStart, loginSuccess, loginFailure, logout, updateUserSuccess } = userSlice.actions;
+export const { loginStart, loginSuccess, loginFailure, logout, updateUserSuccess, toggleTheme } = userSlice.actions;
 export default userSlice.reducer;

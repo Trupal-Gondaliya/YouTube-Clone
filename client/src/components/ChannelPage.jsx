@@ -82,7 +82,7 @@ const ChannelPage = () => {
     const displayText = channel.description?.slice(0, descriptionLimit);
 
     return (
-        <div className="flex flex-col w-full min-h-screen bg-white">
+        <div className="flex flex-col w-full min-h-screen bg-white dark:bg-black">
             {/* 1. Channel Banner */}
             <div className="w-full h-50 md:h-62.5 bg-gray-200">
                 {channel.channelBanner ? (
@@ -111,33 +111,33 @@ const ChannelPage = () => {
                 </div>
                 <div className="flex flex-col items-center md:items-start gap-2">
                     <h1 className="text-3xl font-bold">{channel.channelName}</h1>
-                    <p className="text-gray-600 font-medium"><span className='text-black'>@{channel.channelName.replace(/\s+/g, '').toLowerCase()}</span> • {channel.subscribers.length || 0} subscribers • {channel.videos.length} videos</p>
+                    <p className="text-gray-600 font-medium dark:text-white"><span className='text-black dark:text-white'>@{channel.channelName.replace(/\s+/g, '').toLowerCase()}</span> • {channel.subscribers.length || 0} subscribers • {channel.videos.length} videos</p>
                     <div className="flex">
-                        <p className="text-gray-700 mt-2 max-w-2xl text-center md:text-left">
+                        <p className="text-gray-700 mt-2 max-w-2xl text-center md:text-left dark:text-gray-300">
                             {displayText}
                         </p>
                         <button
                             onClick={() => setIsExpandedDesc(true)}
-                            className="text-sm font-bold mt-2 cursor-pointer hover:text-gray-600"
+                            className="text-sm font-bold mt-2 cursor-pointer hover:text-gray-600 dark:text-white"
                         >
                             ...more
                         </button>
                     </div>
                     {isExpandedDesc && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setIsExpandedDesc(false)}>
-                            <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full relative h-[90%] flex flex-col overflow-hidden">
+                            <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full relative h-[90%] flex flex-col overflow-hidden dark:bg-neutral-800">
                                 <div className="flex justify-between items-center">
                                     <p className="text-2xl font-bold">{channel.channelName}</p>
                                     <button
                                         onClick={() => setIsExpandedDesc(false)}
-                                        className="text-2xl p-3 text-black rounded-md hover:bg-gray-300 hover:rounded-full transition-colors"
+                                        className="text-2xl p-3 text-black dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-neutral-700 hover:rounded-full transition-colors"
                                     >
                                         <FaXmark />
                                     </button>
                                 </div>
                                 <div>
                                     <p className="mt-3 text-2xl font-bold">Description</p>
-                                    <p className="text-gray-700 whitespace-pre-wrap">
+                                    <p className="text-gray-700 whitespace-pre-wrap dark:text-white">
                                         {channel.description || "Description..."}
                                     </p>
                                 </div>
@@ -146,7 +146,7 @@ const ChannelPage = () => {
 
                                     <div className='flex items-center gap-3'>
                                         <BiUserVoice className='text-3xl' />
-                                        <p className="text-gray-700">{channel.subscribers.length} subscribers</p>
+                                        <p>{channel.subscribers.length} subscribers</p>
                                     </div>
                                     <div className='flex items-center gap-3'>
                                         <CiYoutube className='text-3xl' />
@@ -162,7 +162,7 @@ const ChannelPage = () => {
                         <div className="flex gap-2 mt-4">
                             <button
                                 onClick={() => setOpenEdit(true)}
-                                className="bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition">
+                                className="bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition">
                                 Customize Channel
                             </button>
                             <button
@@ -171,7 +171,7 @@ const ChannelPage = () => {
                                 Delete Channel
                             </button>
                             <Link to={`/channel/${channel._id}/manage`}>
-                                <button className="bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition">
+                                <button className="bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition dark:bg-neutral-800 dark:hover:bg-neutral-700">
                                     Manage videos
                                 </button>
                             </Link>

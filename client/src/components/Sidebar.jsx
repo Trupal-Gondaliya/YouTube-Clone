@@ -23,8 +23,8 @@ import axiosInstance from "../utils/axiosInstance";
 const SidebarItem = ({ icon, label, isOpen }) => (
     <div className={`flex items-center rounded-lg cursor-pointer transition-colors
         ${isOpen
-            ? "flex-row gap-5 p-2 px-3 hover:bg-gray-100"
-            : "flex-col gap-1 py-4 hover:bg-gray-100 justify-center items-center text-[10px]"
+            ? "flex-row gap-5 p-2 px-3 hover:bg-gray-100 dark:hover:bg-neutral-800"
+            : "flex-col gap-1 py-4 hover:bg-gray-100 justify-center items-center text-[10px] dark:hover:bg-neutral-800"
         }`}>
         <span className={`${isOpen ? "text-xl" : "text-2xl"}`}>{icon}</span>
         <span className={`${isOpen ? "text-sm" : "text-[10px]"} truncate`}>{label}</span>
@@ -39,7 +39,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
     useEffect(() => {
         const fetchSubscription = async () => {
-            if (!currentUser) return alert("Please login to Subscribe");
+            if (!currentUser?._id) return;
             try {
                 const res = await axiosInstance.get(`/channels/subscriptions/${currentUser._id}`)
                 setSubscriptions(res.data);
@@ -73,16 +73,24 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     return (
         <>
             {/* MAIN SIDEBAR CONTAINER */}
-            <aside className={`fixed left-0 transition-all duration-200 ease-in-out overflow-y-auto custom-scrollbar bg-white
+            <aside className={`fixed left-0 transition-all duration-200 ease-in-out overflow-y-auto bg-[#f9f9f9] text-black dark:bg-black dark:text-white
                 ${isOpen
                     ? "w-60 px-3 top-0 h-screen z-60 shadow-xl"
                     : "w-20 px-1 h-[calc(100vh-56px)] z-50"
-                }`}>
+                }
+                [&::-webkit-scrollbar]:w-2 
+                /* Track Color */
+                [&::-webkit-scrollbar-track]:bg-gray-100 
+                dark:[&::-webkit-scrollbar-track]:bg-[#0f0f0f]
+                /* Thumb Color */
+                [&::-webkit-scrollbar-thumb]:bg-gray-300 
+                dark:[&::-webkit-scrollbar-thumb]:bg-zinc-700
+                `}>
 
                 {/* SIDEBAR HEADER: Only visible when open (contains Logo and Burger) */}
                 {isOpen && (
-                    <div className="sticky flex items-center gap-4 h-16 px-1 top-0 bg-white z-10">
-                        <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 rounded-full text-2xl">
+                    <div className="sticky flex items-center gap-4 h-16 px-1 top-0 z-10 bg-[#f9f9f9] text-black dark:bg-black dark:text-white">
+                        <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full text-2xl">
                             <HiMenu />
                         </button>
                         <div className="flex items-center gap-1 cursor-pointer">
@@ -101,7 +109,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
                 {currentUser && isOpen ? (
                     <div>
-                        <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100">
+                        <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100 dark:hover:bg-neutral-800">
                             <button className="font-bold">You &gt;</button>
                         </div>
                         <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
@@ -114,7 +122,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                         <hr className="my-3 border-gray-200" />
 
                         <div className="p-2 px-3">
-                            <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100">
+                            <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100 dark:hover:bg-neutral-800">
                                 <button className="font-bold">Subscriptions &gt;</button>
                             </div>
                             {<div className="flex flex-col gap-1">
@@ -122,7 +130,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                                     <Link
                                         to={`/channel/${channel._id}`}
                                         key={channel._id}
-                                        className="flex items-center gap-4 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                                        className="flex items-center gap-4 p-2 rounded-lg hover:bg-gray-100 transition-colors dark:hover:bg-neutral-800"
                                     >
                                         <div className="w-8 h-8 rounded-full overflow-hidden bg-gray-200 shrink-0">
                                             {channel.owner?.avatar ? (

@@ -29,8 +29,8 @@ const Login = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-56px)] bg-gray-50">
-            <div className="relative bg-white p-8 border border-gray-300 rounded-lg shadow-sm w-full max-w-md">
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-56px)] bg-gray-50 dark:bg-black">
+            <div className="relative bg-white p-8 border border-gray-300 rounded-lg shadow-sm w-full max-w-md dark:bg-neutral-800">
                 <Link to="/">
                     <div className='absolute top-4 right-8'>&#10060;</div>
                 </Link>

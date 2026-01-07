@@ -11,8 +11,8 @@ const RecommendedVideoCard = ({ video }) => {
                 <h3 className="text-sm font-bold leading-tight line-clamp-2">
                     {video.title}
                 </h3>
-                <p className="text-xs text-gray-600 mt-1">{video.channelId?.channelName}</p>
-                <p className="text-xs text-gray-500">{video.views.length} views</p>
+                <p className="text-xs text-gray-600 mt-1 dark:text-white">{video.channelId?.channelName}</p>
+                <p className="text-xs text-gray-500 dark:text-white">{video.views.length} views</p>
             </div>
         </Link>
     );

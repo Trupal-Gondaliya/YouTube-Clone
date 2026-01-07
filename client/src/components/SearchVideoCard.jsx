@@ -14,10 +14,10 @@ const SearchVideoCard = ({ video }) => {
 
             {/* Video Details */}
             <div className="">
-                <h3 className="text-xl font-semibold line-clamp-2 text-gray-900 leading-tight">
+                <h3 className="text-xl font-semibold line-clamp-2 text-gray-900 leading-tight dark:text-white">
                     {video.title}
                 </h3>
-                <div className="text-xs text-gray-600 items-center">
+                <div className="text-xs text-gray-600 items-center dark:text-gray-300">
                     <span>{video.views.length || 0} views</span>
                 </div>
 
@@ -32,13 +32,13 @@ const SearchVideoCard = ({ video }) => {
                             </div>
                         )}
                     </div>
-                    <span className="text-sm text-gray-700 hover:text-black font-medium">
+                    <span className="text-sm text-gray-700 font-medium dark:text-white">
                         {video.channelId?.channelName || video.uploader?.username}
                     </span>
                 </div>
 
                 {/* Description Snippet */}
-                <p className="text-sm text-gray-500 line-clamp-2">
+                <p className="text-sm text-gray-500 line-clamp-2 dark:text-white">
                     {video.description}
                 </p>
             </div>

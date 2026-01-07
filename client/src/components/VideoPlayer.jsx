@@ -147,7 +147,7 @@ const VideoPlayer = () => {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-md">{video.channelId?.channelName || "Channel Name"}</h3>
-                                    <p className="text-xs text-gray-500">{video.channelId?.subscribers.length + " subscribers"}</p>
+                                    <p className="text-xs text-gray-500 dark:font-bold">{video.channelId?.subscribers.length + " subscribers"}</p>
                                 </div>
                             </div>
                         </Link>
@@ -163,8 +163,8 @@ const VideoPlayer = () => {
                     </div>
 
                     <div className="flex items-center gap-2">
-                        <div className="flex items-center bg-gray-100 rounded-full overflow-hidden">
-                            <button onClick={handelLike} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 border-r border-gray-300">
+                        <div className="flex items-center bg-gray-100 rounded-full overflow-hidden dark:bg-neutral-800">
+                            <button onClick={handelLike} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 border-r border-gray-300 dark:hover:bg-neutral-700">
                                 {video.likes.includes(currentUser?._id) ? (
                                     <AiFillLike className="text-xl text-blue-600" />
                                 ) : (
@@ -172,7 +172,7 @@ const VideoPlayer = () => {
                                 )}
                                 {video.likes?.length}
                             </button>
-                            <button onClick={handelDislike} className="px-4 py-2 hover:bg-gray-200">
+                            <button onClick={handelDislike} className="px-4 py-2 hover:bg-gray-200 dark:hover:bg-neutral-700">
                                 {video.dislikes.includes(currentUser?._id) ? (
                                     <AiFillDislike className='text-xl text-blue-600' />
                                 ) : (
@@ -180,22 +180,22 @@ const VideoPlayer = () => {
                                 )}
                             </button>
                         </div>
-                        <button className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200">
+                        <button className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700">
                             <PiShareFatThin className="text-xl" /> Share
                         </button>
-                        <button className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200">
+                        <button className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700">
                             <TfiDownload /> Download
                         </button>
                     </div>
                 </div>
 
                 {/* 4. Description Box */}
-                <div className="bg-gray-100 rounded-xl p-3 mt-4 text-sm hover:bg-red-50 cursor-pointer transition">
+                <div className="bg-gray-100 rounded-xl p-3 mt-4 text-sm hover:bg-red-50 cursor-pointer transition dark:bg-neutral-800 dark:hover:bg-neutral-700">
                     <div className="flex gap-2 text-sm font-bold mb-1">
                         <span>{video.views?.length} views</span>
                         <span>{new Date(video.createdAt).toLocaleDateString()}</span>
                     </div>
-                    <p className="whitespace-pre-wrap text-sm text-gray-800">
+                    <p className="whitespace-pre-wrap text-sm text-gray-800 dark:text-white">
                         {displayText}
                         {isLongDescription && !isExpandedDesc && "..."}
                     </p>

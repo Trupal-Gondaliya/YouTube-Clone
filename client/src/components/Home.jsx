@@ -56,10 +56,10 @@ const Home = () => {
         ) : (
           <div className="flex flex-col items-center justify-center py-32 text-gray-400 w-full">
             <HiOutlineVideoCameraSlash className="text-8xl mb-4 opacity-10" />
-            <h2 className="text-2xl font-bold text-gray-700">No videos found</h2>
+            <h2 className="text-2xl font-bold text-gray-700 dark:text-white">No videos found</h2>
             <p className="text-gray-500 mt-2 text-center">
               There are currently no videos in the
-              <span className="font-bold text-gray-700"> "{selectedFilterCategory}"</span> category.
+              <span className="font-bold text-gray-700 dark:text-white"> "{selectedFilterCategory}"</span> category.
             </p>
             <button
               onClick={() => setSelectedFilterCategory("All")}

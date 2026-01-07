@@ -46,7 +46,7 @@ const Comments = ({ videoId }) => {
                         onChange={(e) => setNewComment(e.target.value)}
                     />
                     <div className="flex justify-end gap-3 mt-2">
-                        <button onClick={() => setNewComment("")} className="px-4 py-2 hover:bg-gray-100 rounded-full font-medium">Cancel</button>
+                        <button onClick={() => setNewComment("")} className="px-4 py-2 hover:bg-gray-100 rounded-full font-medium dark:hover:bg-neutral-700">Cancel</button>
                         <button onClick={handleComment} className="px-4 py-2 bg-blue-600 text-white rounded-full font-medium">Comment</button>
                     </div>
                 </div>

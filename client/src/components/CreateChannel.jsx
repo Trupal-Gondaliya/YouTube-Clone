@@ -50,7 +50,7 @@ const CreateChannel = ({ setOpen }) => {
 
     return (
         <div className="fixed inset-0 top-14 bg-black/50 backdrop-blur-sm flex items-center justify-center z-100">
-            <div className="bg-white w-112.5 p-8 rounded-2xl shadow-2xl flex flex-col gap-4">
+            <div className="bg-white w-112.5 p-8 rounded-2xl shadow-2xl flex flex-col gap-4 dark:bg-neutral-800 dark:text-white">
                 <h2 className="text-xl font-bold">Channel Details</h2>
 
                 <input type="text" placeholder="Channel Name" className="border p-2 rounded"

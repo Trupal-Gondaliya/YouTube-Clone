@@ -27,8 +27,8 @@ const VideoGrid = ({ video, userData }) => {
         </div>
         <div className="flex flex-col">
           <h3 className="font-bold text-md leading-tight line-clamp-2">{video.title}</h3>
-          <p className="text-gray-600 text-sm mt-1">{video.channelId?.channelName}</p>
-          <p className="text-gray-600 text-sm">{video.views.length} views</p>
+          <p className="text-gray-600 text-sm mt-1 dark:text-white">{video.channelId?.channelName}</p>
+          <p className="text-gray-600 text-sm dark:text-white">{video.views.length} views</p>
         </div>
       </div>
     </Link>

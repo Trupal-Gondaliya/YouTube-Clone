@@ -29,14 +29,14 @@ const FilterBar = ({ selectedFilterCategory, setSelectedFilterCategory }) => {
     };
 
     return (
-        <div className="bg-white border-b border-gray-100 flex items-center px-4 sticky top-0 z-40 ">
+        <div className="bg-white border-b border-gray-100 dark:bg-black flex items-center px-4 sticky top-0 z-40 ">
             
             {/* Left Button */}
             {showLeftBtn && (
-                <div className="absolute left-0 z-10 bg-linear-to-r from-white via-white to-transparent pr-10 h-full flex items-center">
+                <div className="absolute left-0 z-10 bg-linear-to-r from-white via-white to-transparent dark:from-black dark:via-black dark:text-white pr-10 h-full flex items-center">
                     <button 
                         onClick={() => scroll("left")}
-                        className="p-1 hover:bg-gray-200 rounded-full transition-colors"
+                        className="p-1 hover:bg-gray-200 rounded-full transition-colors dark:hover:bg-neutral-700"
                     >
                         <MdChevronLeft size={28} />
                     </button>
@@ -55,8 +55,8 @@ const FilterBar = ({ selectedFilterCategory, setSelectedFilterCategory }) => {
                         onClick={() => setSelectedFilterCategory(cat)}
                         className={`px-4 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all border
                             ${selectedFilterCategory === cat 
-                                ? "bg-black text-white border-black" 
-                                : "bg-gray-100 text-black border-transparent hover:bg-gray-200"
+                                ? "bg-black text-white border-black dark:bg-white dark:text-black" 
+                                : "bg-gray-100 text-black border-transparent hover:bg-gray-200 dark:bg-neutral-800 dark:text-white dark:hover:bg-neutral-700"
                             }`}
                     >
                         {cat}
@@ -66,10 +66,10 @@ const FilterBar = ({ selectedFilterCategory, setSelectedFilterCategory }) => {
 
             {/* Right Button */}
             {showRightBtn && (
-                <div className="absolute right-0 z-10 bg-linear-to-l from-white via-white to-transparent pl-10 h-full flex items-center">
+                <div className="absolute right-0 z-10 bg-linear-to-l from-white via-white to-transparent dark:from-black dark:via-black dark:text-white pl-10 h-full flex items-center">
                     <button 
                         onClick={() => scroll("right")}
-                        className="p-1 hover:bg-gray-200 rounded-full transition-colors"
+                        className="p-1 hover:bg-gray-200 rounded-full transition-colors dark:hover:bg-neutral-700"
                     >
                         <MdChevronRight size={28} />
                     </button>

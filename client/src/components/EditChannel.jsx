@@ -85,17 +85,17 @@ const EditChannel = ({ setOpen, channel }) => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-200 p-4">
             <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
 
-                <div className="p-6 border-b flex justify-between items-center bg-gray-50">
-                    <h2 className="text-xl font-bold text-gray-800">Edit Channel Settings</h2>
-                    <button onClick={() => setOpen(false)} className="text-red-400 hover:text-gray-700">
+                <div className="p-6 border-b flex justify-between items-center bg-gray-50 dark:bg-neutral-800">
+                    <h2 className="text-xl font-bold text-gray-800 dark:text-white">Edit Channel Settings</h2>
+                    <button onClick={() => setOpen(false)} className="text-red-400 hover:text-gray-700 dark:text-white dark:hover:text-red-400">
                         <FaXmark className="w-6 h-6" />
                     </button>
                 </div>
 
-                <div className="p-6 overflow-y-auto space-y-6">
+                <div className="p-6 overflow-y-auto space-y-6 dark:bg-neutral-800">
                     {/* Banner Section */}
                     <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-700">Channel Banner</label>
+                        <label className="text-sm font-semibold text-gray-700 dark:text-white">Channel Banner</label>
                         <div className="relative group h-32 w-full bg-gray-100 rounded-xl overflow-hidden border-2 border-dashed border-gray-300">
                             {bannerPreview ? (
                                 <>
@@ -111,7 +111,7 @@ const EditChannel = ({ setOpen, channel }) => {
                                 </div>
                             )}
                         </div>
-                        <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'banner')} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
+                        <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'banner')} className="text-sm text-gray-500 dark:text-white file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
                     </div>
 
                     {/* Avatar Section */}
@@ -124,9 +124,9 @@ const EditChannel = ({ setOpen, channel }) => {
                             )}
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold text-gray-700">Profile Picture</label>
+                            <label className="text-sm font-semibold text-gray-700 dark:text-white">Profile Picture</label>
                             <div className="flex gap-2">
-                                <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'avatar')} className="text-xs text-gray-500 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-gray-100 hover:file:bg-gray-200" />
+                                <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'avatar')} className="text-xs text-gray-500 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-gray-100 hover:file:bg-gray-200 " />
                                 <button onClick={removeAvatar} className="text-xs text-red-600 font-medium">Remove</button>
                             </div>
                         </div>
@@ -135,19 +135,20 @@ const EditChannel = ({ setOpen, channel }) => {
                     {/* Inputs */}
                     <div className="space-y-4">
                         <div className="flex flex-col gap-1">
-                            <label className="text-sm font-semibold text-gray-700">Channel Name</label>
+                            <label className="text-sm font-semibold text-gray-700 dark:text-white">Channel Name</label>
                             <input type="text" value={name} onChange={e => setName(e.target.value)} className="border border-gray-300 p-2.5 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
                         </div>
                         <div className="flex flex-col gap-1">
-                            <label className="text-sm font-semibold text-gray-700">Description</label>
+                            <label className="text-sm font-semibold text-gray-700 dark:text-white">Description</label>
                             <textarea value={desc} onChange={e => setDesc(e.target.value)} className="border border-gray-300 p-2.5 rounded-lg h-28 focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none" />
                         </div>
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t bg-gray-50 flex justify-end gap-3"><button onClick={() => setOpen(false)} className="px-5 py-2 text-gray-700 font-medium hover:bg-gray-200 rounded-lg transition-colors">Cancel</button>
-                    <button disabled={loading} onClick={handleUpdate} className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-blue-400 transition-colors shadow-lg shadow-blue-200">
+                <div className="p-6 border-t bg-gray-50 flex justify-end gap-3 dark:bg-neutral-800">
+                    <button onClick={() => setOpen(false)} className="px-5 py-2 text-gray-700 dark:text-white dark:hover:bg-neutral-700 font-medium hover:bg-gray-200 rounded-lg transition-colors">Cancel</button>
+                    <button disabled={loading} onClick={handleUpdate} className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-blue-400 transition-colors">
                         {loading ? "Saving..." : "Save Changes"}
                     </button>
                 </div>

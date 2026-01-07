@@ -15,6 +15,8 @@ import { FiYoutube } from "react-icons/fi";
 import { CgLivePhoto } from "react-icons/cg";
 import { IoCreateOutline } from "react-icons/io5";
 import CreateChannel from "./CreateChannel.jsx";
+import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
+import { toggleTheme } from "../redux/userSlice.js";
 
 const Header = ({ toggleSidebar }) => {
     const { currentUser } = useSelector(state => state.user);
@@ -24,6 +26,7 @@ const Header = ({ toggleSidebar }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [searchInput, setSearchInput] = useState("");
+    const { darkMode } = useSelector((state) => state.user);
 
     // logout function
     const handleLogout = () => {
@@ -40,6 +43,7 @@ const Header = ({ toggleSidebar }) => {
 
     // function to view channel page
     const viewChannelPage = () => {
+        setShowMenu(false);
         if (currentUser?.channels && currentUser.channels.length > 0) {
             // Navigate to the first channel in their list
             navigate(`/channel/${currentUser.channels[0]}`);
@@ -72,20 +76,20 @@ const Header = ({ toggleSidebar }) => {
     };
 
     return (
-        <header className="flex justify-between items-center px-4 h-14 sticky top-0 z-50 bg-white">
+        <header className="flex justify-between items-center px-4 h-14 sticky top-0 z-50 bg-[#f9f9f9] text-black dark:bg-black dark:text-white">
             <div className="flex items-center gap-4">
-                <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 rounded-full text-2xl">
+                <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full text-2xl">
                     <HiMenu />
                 </button>
                 <div className="flex items-center gap-1 cursor-pointer">
                     <AiFillYoutube className="text-red-600 text-3xl" />
-                    <span className="font-bold text-xl tracking-tighter">YouTube<sup className="text-[12px] font-medium text-gray-600"> IN</sup></span>
+                    <span className="font-bold text-xl tracking-tighter">YouTube<sup className="text-[12px] font-medium"> IN</sup></span>
                 </div>
             </div>
 
             <div className="flex items-center justify-center w-1/2 gap-4 group">
                 <div className="flex items-center flex-1 max-w-150">
-                    <div className="flex items-center flex-1 h-10 px-4 bg-white border border-gray-300 rounded-l-full focus-within:border-blue-500 focus-within:shadow-inner">
+                    <div className="flex items-center flex-1 h-10 px-4 bg-white dark:bg-black border border-gray-300 dark:border-neutral-800 rounded-l-full focus-within:border-blue-500 focus-within:shadow-inner">
                         <input
                             onChange={e => setSearchInput(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleSearchClick(e)}
@@ -93,12 +97,12 @@ const Header = ({ toggleSidebar }) => {
                             placeholder="Search"
                             className="w-full bg-transparent outline-none text-base" />
                     </div>
-                    <button onClick={handleSearchClick} className="cursor-pointer flex items-center justify-center w-16 h-10 bg-gray-100 border border-l-0 border-gray-300 rounded-r-full hover:bg-gray-200">
+                    <button onClick={handleSearchClick} className="cursor-pointer flex items-center justify-center w-16 h-10 bg-gray-100 dark:bg-neutral-800 border border-l-0 border-gray-300 dark:border-neutral-800 rounded-r-full hover:bg-gray-200 dark:hover:bg-neutral-700">
                         <AiOutlineSearch className="text-2xl" />
                     </button>
                 </div>
 
-                <button className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer">
+                <button className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer dark:bg-neutral-800 dark:hover:bg-neutral-700">
                     <MdOutlineKeyboardVoice className="text-2xl" />
                 </button>
             </div>
@@ -108,32 +112,32 @@ const Header = ({ toggleSidebar }) => {
                     <>
                         <div className="relative">
                             <button onClick={() => setShowChannel(!showChannel)}
-                                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 px-5 rounded-full transition-colors">
+                                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 px-5 rounded-full transition-colors dark:bg-neutral-800 dark:hover:bg-neutral-700">
                                 <GoPlus className="text-2xl" />
                                 <span className="font-medium">Create</span>
                             </button>
                             {/* Dropdown menu for create */}
                             {showChannel && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+                                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-neutral-800 rounded-lg shadow-lg py-2 z-50">
                                     <button onClick={handleUploadClick}
-                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 transition flex items-center gap-2">
+                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 dark:hover:bg-neutral-700 transition flex items-center gap-2">
                                         <FiYoutube />
                                         <span>Upload video</span>
                                     </button>
                                     <button
-                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 transition flex items-center gap-2">
+                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 dark:hover:bg-neutral-700 transition flex items-center gap-2">
                                         <CgLivePhoto />
                                         <span>Go live</span>
                                     </button>
                                     <button
-                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 transition flex items-center gap-2">
+                                        className="w-full text-left px-4 py-2 text-md hover:bg-gray-200 dark:hover:bg-neutral-700 transition flex items-center gap-2">
                                         <IoCreateOutline />
                                         <span>Create post</span>
                                     </button>
                                 </div>
                             )}
                         </div>
-                        <div className="cursor-pointer hover:bg-gray-200 p-2 rounded-full">
+                        <div className="cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-700 p-2 rounded-full">
                             <IoMdNotificationsOutline className="text-2xl" />
                         </div>
                         {/* User Avatar Circle */}
@@ -151,29 +155,45 @@ const Header = ({ toggleSidebar }) => {
                             </div>
                             {/* Dropdown Menu */}
                             {showMenu && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg py-2 z-50">
+                                <div className="flex flex-col absolute right-0 mt-2 w-48 bg-white border dark:bg-neutral-800 border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-2 z-50">
                                     <button onClick={viewChannelPage}
-                                        className="px-4 py-2 border-b border-gray-100">
+                                        className="px-4 py-2 border-b border-gray-100 text-left hover:bg-gray-100 dark:hover:bg-neutral-700">
                                         <p className="text-sm font-semibold">{currentUser.username}</p>
                                         <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
                                     </button>
                                     <button
                                         onClick={handleLogout}
-                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition">
+                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
                                         Sign out
                                     </button>
                                     <button onClick={() => setOpenChannelModal(true)}
-                                        className="w-full text-left px-4 py-2 text-md text-blue-800 hover:bg-gray-100 transition">
+                                        className="w-full text-left px-4 py-2 text-md text-blue-800 dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
                                         Create Channel
                                     </button>
                                     {openChannelModal && <CreateChannel setOpen={setOpenChannelModal} />}
+                                    
+                                    <button
+                                        onClick={() => dispatch(toggleTheme())}
+                                        className="w-full flex items-center gap-4 px-4 py-3 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors">
+                                        {darkMode ? (
+                                            <>  
+                                                <MdOutlineDarkMode className="text-2xl" />
+                                                <span className="text-sm">Appearance: Dark</span>
+                                            </>
+                                        ) : (
+                                            <>  
+                                                <MdOutlineLightMode className="text-2xl" />
+                                                <span className="text-sm">Appearance: Light</span>
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
                             )}
                         </div>
                     </>
                 ) : (
                     <div className="flex items-center gap-6">
-                        <div className="cursor-pointer hover:bg-gray-200 rounded-full p-2">
+                        <div className="cursor-pointer hover:bg-gray-200 rounded-full p-2 dark:hover:bg-neutral-700">
                             <BsThreeDotsVertical className="text-xl" />
                         </div>
                         <Link to="/login" className="text-blue-600 flex items-center gap-2 text-xl border rounded-full border-gray-300 px-3 h-10 cursor-pointer hover:bg-blue-100 transition-colors">

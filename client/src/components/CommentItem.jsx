@@ -50,7 +50,7 @@ const CommentItem = ({ comment, setComments, comments }) => {
             </div>
           </div>
         ) : (
-          <p className="text-sm text-gray-800">{comment.text}</p>
+          <p className="text-sm text-gray-800 dark:text-white">{comment.text}</p>
         )}
       </div>
 
