@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.js';
 import videoRoutes from "./routes/video.js";
 import channelRoutes from "./routes/channel.js";
 import commentRoutes from "./routes/comment.js";
+import WatchLater from './routes/watchLater.js';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use("/auth", authRoutes);
 app.use("/videos", videoRoutes);
 app.use("/channels", channelRoutes);
 app.use("/comments", commentRoutes);
+app.use("/watchlater", WatchLater);
 
 // Connect to Database
 connectDB();

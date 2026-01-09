@@ -159,3 +159,17 @@ export const getByCategory = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const allLikesVideo = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    const videos = await Video.find({
+      likes: { $in: [userId]},
+    })
+      .populate("uploader", "username avatar")
+      .populate("channelId", "channelName");
+    res.status(200).json(videos);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
