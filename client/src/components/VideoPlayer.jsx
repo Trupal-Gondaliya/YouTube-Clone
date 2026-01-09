@@ -8,6 +8,8 @@ import RecommendedVideoCard from '../components/RecommendedVideoCard.jsx';
 import { useSelector, useDispatch } from 'react-redux';
 import Comments from './Comments.jsx';
 import { updateUserSuccess } from '../redux/userSlice.js';
+import { IoSaveOutline, IoSaveSharp } from "react-icons/io5";
+import { toast, Toaster } from 'react-hot-toast';
 
 const VideoPlayer = () => {
     const { id } = useParams();
@@ -16,6 +18,7 @@ const VideoPlayer = () => {
     const { currentUser } = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const [isExpandedDesc, setIsExpandedDesc] = useState(false);
+    const [watchLater, setWatchLater] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -26,6 +29,10 @@ const VideoPlayer = () => {
                 // Fetch all videos for the sidebar
                 const recRes = await axiosInstance.get("/videos/");
                 setRecommended(recRes.data.filter(v => v._id !== id));
+
+                // Fetch Watch later videos
+                const resWatchLater = await axiosInstance.get("/watchlater/watchList");
+                setWatchLater(resWatchLater.data);
             } catch (err) {
                 console.error(err);
             }
@@ -112,6 +119,30 @@ const VideoPlayer = () => {
         ? video.description
         : video.description?.slice(0, descriptionLimit);
 
+    const handleWatchLater = async () => {
+        if (!currentUser) return alert("Please login first!");
+        try {
+            const res = await axiosInstance.post(`/watchlater/${video._id}`);
+            // 2. MANUALLY update the local state to trigger a re-render
+            setWatchLater((prevList) => {
+                const isAdded = prevList.some(item => item._id === video._id);
+
+                if (isAdded) {
+                    // If it was already there, remove it
+                    return prevList.filter(item => item._id !== video._id);
+                } else {
+                    // If it wasn't there, add the current video object
+                    return [...prevList, video];
+                }
+            });
+            toast.success(res.data.message, {
+                style: { borderRadius: '10px', background: '#333', color: '#fff' }
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     return (
         <div className="flex flex-col lg:flex-row gap-6 p-4 lg:px-12 min-h-screen">
             {/* LEFT SIDE: Video & Details */}
@@ -185,6 +216,16 @@ const VideoPlayer = () => {
                         </button>
                         <button className="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700">
                             <TfiDownload /> Download
+                        </button>
+                        <button
+                            onClick={handleWatchLater}
+                            className="bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700">
+                            {watchLater.some(item => item._id === video._id) ? (
+                                <IoSaveSharp className="text-2xl" />
+                            ) : (
+                                <IoSaveOutline className="text-2xl" />
+                            )}
+                            <Toaster position="bottom-left" />
                         </button>
                     </div>
                 </div>

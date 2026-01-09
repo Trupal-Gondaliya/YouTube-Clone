@@ -110,7 +110,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 {currentUser && isOpen ? (
                     <div>
                         <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100 dark:hover:bg-neutral-800">
-                            <button className="font-bold">You &gt;</button>
+                            <Link to="/you"><button className="font-bold">You &gt;</button></Link>
                         </div>
                         <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
                         <SidebarItem icon={<MdOutlinePlaylistPlay />} label="Playlists" isOpen={isOpen} />
@@ -155,7 +155,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                     </div>
                 ) : (
                     <>
-                        <SidebarItem icon={<FaRegCircleUser />} label="You" isOpen={isOpen} />
+                        <Link to="/you"><SidebarItem icon={<FaRegCircleUser />} label="You" isOpen={isOpen} /></Link>
                         {isOpen && (
                             <>
                                 <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
