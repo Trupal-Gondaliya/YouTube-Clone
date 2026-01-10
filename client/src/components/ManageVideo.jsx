@@ -49,16 +49,52 @@ const ManageVideo = () => {
     };
 
     return (
-        <div className="p-4 md:p-8 bg-gray-50 min-h-screen dark:bg-black">
+        <div className="p-4 md:p-8 bg-gray-50 min-h-screen dark:bg-black top-14">
             <div className="max-w-6xl mx-auto">
                 {/* Header Section */}
                 <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Channel Content</h1>
-                    <button onClick={() => navigate(-1)} className="text-gray-600 hover:text-black dark:text-white dark:hover:text-blue-400">Back</button>
+                    <h1 className="text-xl md:text-2xl font-bold text-gray-800 dark:text-white">Channel Content</h1>
+                    <button onClick={() => navigate(-1)} className="text-sm md:text-base text-gray-600 hover:text-black dark:text-white dark:hover:text-blue-400">Back</button>
                 </div>
 
-                {/* Video Management Table */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden dark:bg-neutral-800">
+                {/* 1. MOBILE VIEW: List Layout (Hidden on md+) */}
+                <div className="md:hidden divide-gray-100 dark:divide-neutral-700">
+                    {videos.map(video => (
+                        <div key={video._id} className="p-4 flex items-center justify-between gap-4 hover:bg-gray-50 dark:hover:bg-neutral-700/50">
+                            <div className="flex gap-3 items-center overflow-hidden">
+                                {/* Thumbnail */}
+                                <img
+                                    src={video.thumbnailUrl}
+                                    loading="lazy"
+                                    className="w-24 h-14 shrink-0 object-cover rounded-md shadow-sm"
+                                    alt="thumb"
+                                />
+                                {/* Basic Info */}
+                                <div className="flex flex-col min-w-0">
+                                    <span className="font-semibold text-sm text-gray-800 dark:text-white truncate">
+                                        {video.title}
+                                    </span>
+                                    <span className="text-[10px] text-gray-500 uppercase tracking-wider">
+                                        {video.category}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Mobile Actions */}
+                            <div className="flex gap-1 shrink-0">
+                                <button onClick={() => handleEditClick(video)} className="p-2 text-blue-600 active:bg-blue-100 rounded-lg">
+                                    <FaEdit className='text-lg' />
+                                </button>
+                                <button onClick={() => handleDelete(video._id)} className="p-2 text-red-500 active:bg-red-100 rounded-lg">
+                                    <FaTrash className='text-base' />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* LAPTOP VIEW : Video Management Table */}
+                <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden dark:bg-neutral-800">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="border-b bg-gray-50 text-gray-600 text-sm uppercase dark:bg-neutral-800 dark:text-white">

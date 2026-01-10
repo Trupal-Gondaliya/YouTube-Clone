@@ -70,8 +70,8 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
 
     return (
         /* Modal Overlay */
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-            <form onSubmit={handleUpdate} className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6 flex flex-col gap-4 dark:bg-neutral-800 h-[90%] ">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-200 p-4">
+            <form onSubmit={handleUpdate} className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-4 sm:p-6 flex flex-col gap-4 dark:bg-neutral-800 max-h-[95vh] sm:max-h-[90vh]">
                 {/* Header */}
                 <div className="flex justify-between items-center border-b pb-3">
                     <h2 className="text-xl font-bold">Edit Video Details</h2>

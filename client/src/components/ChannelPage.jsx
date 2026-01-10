@@ -11,14 +11,16 @@ import { Link } from 'react-router-dom';
 import { FaXmark } from "react-icons/fa6";
 import { CiYoutube } from "react-icons/ci";
 import { BiUserVoice } from "react-icons/bi";
+import DeleteChannel from './DeleteChannel.jsx';
 
 const ChannelPage = () => {
     const { id } = useParams(); // id from url paramter
     const [channel, setChannel] = useState(null); //all channel data
     const { currentUser } = useSelector(state => state.user); //login user info
-    const [openEdit, setOpenEdit] = useState(false); 
+    const [openEdit, setOpenEdit] = useState(false);
     const dispatch = useDispatch();
     const [isExpandedDesc, setIsExpandedDesc] = useState(false);
+    const [isDelOpen, setIsDelOpen] = useState(false);
 
     // get channel data from api
     useEffect(() => {
@@ -40,18 +42,16 @@ const ChannelPage = () => {
 
     // delete channel
     const handleDeleteChannel = async () => {
-        if (window.confirm("Are you sure you want to delete this channel? All videos will be lost.")) {
-            try {
-                await axiosInstance.delete(`/channels/${channel._id}`);
-                const updatedChannels = currentUser.channels.filter(id => id !== channel._id);
-                dispatch(updateUserSuccess({ channels: updatedChannels }));
-                alert("Channel Deleted");
-                window.location.href = "/";
-            } catch (err) {
-                console.error(err);
-            }
+        try {
+            await axiosInstance.delete(`/channels/${channel._id}`);
+            const updatedChannels = currentUser.channels.filter(id => id !== channel._id);
+            dispatch(updateUserSuccess({ channels: updatedChannels }));
+            alert("Channel Deleted");
+            window.location.href = "/";
+        } catch (err) {
+            console.error(err);
         }
-    };
+    }
 
     // subscribe handler functionality
     const handelSubscribe = async () => {
@@ -133,55 +133,61 @@ const ChannelPage = () => {
                         </button>
                     </div>
                     {/* show all details about channel */}
-                    {isExpandedDesc && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setIsExpandedDesc(false)}>
-                            <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full relative h-[90%] flex flex-col overflow-hidden dark:bg-neutral-800">
-                                <div className="flex justify-between items-center">
-                                    <p className="text-2xl font-bold">{channel.channelName}</p>
-                                    <button
-                                        onClick={() => setIsExpandedDesc(false)}
-                                        className="text-2xl p-3 text-black dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-neutral-700 hover:rounded-full transition-colors"
-                                    >
-                                        <FaXmark />
-                                    </button>
-                                </div>
-                                <div>
-                                    <p className="mt-3 text-2xl font-bold">Description</p>
-                                    <p className="text-gray-700 whitespace-pre-wrap dark:text-white">
-                                        {channel.description || "Description..."}
-                                    </p>
-                                </div>
-                                <p className="my-3 text-2xl font-bold">More info</p>
-                                <div className='flex flex-col gap-4 '>
+                    {isExpandedDesc && (<div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-200 p-4" onClick={() => setIsExpandedDesc(false)}>
+                        <div className="bg-white p-6 md:p-8 rounded-lg shadow-xl max-w-md w-full relative max-h-[85vh] flex flex-col overflow-auto dark:bg-neutral-800"
+                            onClick={(e) => e.stopPropagation()}>
+                            <div className="flex justify-between items-center">
+                                <p className="text-2xl font-bold">{channel.channelName}</p>
+                                <button
+                                    onClick={() => setIsExpandedDesc(false)}
+                                    className="text-2xl p-3 text-black dark:text-white rounded-md hover:bg-gray-300 dark:hover:bg-neutral-700 hover:rounded-full transition-colors"
+                                >
+                                    <FaXmark />
+                                </button>
+                            </div>
+                            <div>
+                                <p className="mt-3 text-2xl font-bold">Description</p>
+                                <p className="text-gray-700 whitespace-pre-wrap dark:text-white">
+                                    {channel.description || "Description..."}
+                                </p>
+                            </div>
+                            <p className="my-3 text-2xl font-bold">More info</p>
+                            <div className='flex flex-col gap-4 '>
 
-                                    <div className='flex items-center gap-3'>
-                                        <BiUserVoice className='text-3xl' />
-                                        <p>{channel.subscribers.length} subscribers</p>
-                                    </div>
-                                    <div className='flex items-center gap-3'>
-                                        <CiYoutube className='text-3xl' />
-                                        <p>{channel.videos.length} videos</p>
-                                    </div>
+                                <div className='flex items-center gap-3'>
+                                    <BiUserVoice className='text-3xl' />
+                                    <p>{channel.subscribers.length} subscribers</p>
+                                </div>
+                                <div className='flex items-center gap-3'>
+                                    <CiYoutube className='text-3xl' />
+                                    <p>{channel.videos.length} videos</p>
                                 </div>
                             </div>
                         </div>
-                    )}
+                    </div>)}
 
                     {/* Action Buttons for Owner */}
                     {isOwner && (
                         <div className="flex gap-2 mt-4">
                             <button
                                 onClick={() => setOpenEdit(true)}
-                                className="bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition">
+                                className="text-xs md:text-[15px] bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 transition">
                                 Customize Channel
                             </button>
                             <button
-                                onClick={handleDeleteChannel}
-                                className="bg-red-100 text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-200 transition">
+                                onClick={() => setIsDelOpen(true)}
+                                className="text-xs md:text-[15px] bg-red-100 text-red-600 px-4 py-2 rounded-full font-semibold hover:bg-red-200 transition">
                                 Delete Channel
                             </button>
+                            {isDelOpen && (
+                                <DeleteChannel
+                                    onClose={() => setIsDelOpen(false)}
+                                    onConfirm={handleDeleteChannel}
+                                    title={channel.channelName}
+                                />
+                            )}
                             <Link to={`/channel/${channel._id}/manage`}>
-                                <button className="bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition dark:bg-neutral-800 dark:hover:bg-neutral-700">
+                                <button className="text-xs md:text-[15px] bg-gray-100 px-4 py-2 rounded-full font-semibold hover:bg-gray-200 transition dark:bg-neutral-800 dark:hover:bg-neutral-700">
                                     Manage videos
                                 </button>
                             </Link>

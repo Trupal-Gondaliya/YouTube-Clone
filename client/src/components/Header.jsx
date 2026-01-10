@@ -2,7 +2,7 @@
 import { HiMenu } from "react-icons/hi";
 import { AiOutlineSearch, AiFillYoutube } from "react-icons/ai";
 import { MdOutlineKeyboardVoice } from "react-icons/md";
-import { FaRegCircleUser } from "react-icons/fa6";
+import { FaRegCircleUser, FaXmark } from "react-icons/fa6";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,9 +13,8 @@ import { GoPlus } from "react-icons/go";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { FiYoutube } from "react-icons/fi";
 import { CgLivePhoto } from "react-icons/cg";
-import { IoCreateOutline } from "react-icons/io5";
+import { IoCreateOutline, IoArrowBackOutline } from "react-icons/io5";
 import CreateChannel from "./CreateChannel.jsx";
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { toggleTheme } from "../redux/userSlice.js";
 
 const Header = ({ toggleSidebar }) => {
@@ -28,6 +27,7 @@ const Header = ({ toggleSidebar }) => {
     const navigate = useNavigate();
     const [searchInput, setSearchInput] = useState("");
     const { darkMode } = useSelector((state) => state.user);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     // logout function
     const handleLogout = () => {
@@ -78,22 +78,59 @@ const Header = ({ toggleSidebar }) => {
         setShowChannel(false);
     };
 
+    if (isSearchOpen) {
+        return (
+            <header className="flex items-center px-2 h-14 sticky top-0 z-50 bg-white dark:bg-black w-full gap-2">
+                <button 
+                    onClick={() => setIsSearchOpen(false)} 
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full"
+                >
+                    <IoArrowBackOutline className="text-2xl" />
+                </button>
+                
+                <div className="flex flex-1 items-center h-10 px-4 bg-gray-100 dark:bg-neutral-900 rounded-full">
+                    <input
+                        autoFocus
+                        value={searchInput}
+                        onChange={e => setSearchInput(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSearchClick()}
+                        type="text"
+                        placeholder="Search YouTube"
+                        className="w-full bg-transparent outline-none text-base"
+                    />
+                    {searchInput && (
+                        <FaXmark 
+                            onClick={() => setSearchInput("")} 
+                            className="text-xl cursor-pointer text-gray-600" 
+                        />
+                    )}
+                </div>
+                
+                <button className="p-2 bg-gray-100 dark:bg-neutral-800 rounded-full">
+                    <MdOutlineKeyboardVoice className="text-2xl" />
+                </button>
+            </header>
+        );
+    }
+
     return (
-        <header className="flex justify-between items-center px-4 h-14 sticky top-0 z-50 bg-[#f9f9f9] text-black dark:bg-black dark:text-white">
+        <header className="flex justify-between items-center px-2 md:px-4 h-14 sticky top-0 z-50 bg-[#f9f9f9] text-black dark:bg-black dark:text-white">
             {/* LEFT SECTION: Menu & Logo */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 md:gap-4 shrink-0">
                 <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full text-2xl">
                     <HiMenu />
                 </button>
-                <div className="flex items-center gap-1 cursor-pointer">
-                    <AiFillYoutube className="text-red-600 text-3xl" />
-                    <span className="font-bold text-xl tracking-tighter">YouTube<sup className="text-[12px] font-medium"> IN</sup></span>
-                </div>
+                <Link to="/" className="flex items-center gap-1">
+                    <AiFillYoutube className="text-red-600 text-3xl md:text-4xl" />
+                    <span className="font-bold text-lg md:text-xl tracking-tighter hidden sm:block">
+                        YouTube<sup className="text-[10px] font-medium ml-1">IN</sup>
+                    </span>
+                </Link>
             </div>
 
             {/* MIDDLE SECTION: Search Bar & Voice Search */}
-            <div className="flex items-center justify-center w-1/2 gap-4 group">
-                <div className="flex items-center flex-1 max-w-150">
+            <div className="flex items-center justify-center flex-1 mx-2 md:mx-4 max-w-180">
+                <div className="hidden md:flex items-center flex-1 group">
                     <div className="flex items-center flex-1 h-10 px-4 bg-white dark:bg-black border border-gray-300 dark:border-neutral-800 rounded-l-full focus-within:border-blue-500 focus-within:shadow-inner">
                         <input
                             onChange={e => setSearchInput(e.target.value)}
@@ -107,18 +144,24 @@ const Header = ({ toggleSidebar }) => {
                     </button>
                 </div>
 
-                <button className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer dark:bg-neutral-800 dark:hover:bg-neutral-700">
+                {/* Mobile Search Icon Only */}
+                <button onClick={() => setIsSearchOpen(true)} className="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full">
+                    <AiOutlineSearch className="text-2xl" />
+                </button>
+
+                <button className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer dark:bg-neutral-800 dark:hover:bg-neutral-700 shrink-0">
                     <MdOutlineKeyboardVoice className="text-2xl" />
                 </button>
+
             </div>
 
             {/* RIGHT SECTION: Auth Actions & User Profile */}
-            <div className="flex gap-6 items-center">
+            <div className="flex gap-1 md:gap-3 items-center shrink-0">
                 {currentUser ? (
                     <>
                         <div className="relative">
                             <button onClick={() => setShowChannel(!showChannel)}
-                                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 py-2 px-5 rounded-full transition-colors dark:bg-neutral-800 dark:hover:bg-neutral-700">
+                                className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 p-2 md:py-2 md:px-4 rounded-full transition-colors dark:bg-neutral-800 dark:hover:bg-neutral-700">
                                 <GoPlus className="text-2xl" />
                                 <span className="font-medium">Create</span>
                             </button>
@@ -143,12 +186,12 @@ const Header = ({ toggleSidebar }) => {
                                 </div>
                             )}
                         </div>
-                        <div className="cursor-pointer hover:bg-gray-200 dark:hover:bg-neutral-700 p-2 rounded-full">
+                        <div className="hidden xs:block cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full">
                             <IoMdNotificationsOutline className="text-2xl" />
                         </div>
                         {/* User Avatar Circle */}
                         <div className="relative">
-                            <div onClick={() => setShowMenu(!showMenu)} className="w-9 h-9 rounded-full bg-purple-700 flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-purple-800 transition-colors">
+                            <div onClick={() => setShowMenu(!showMenu)} className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-purple-700 flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-purple-800 transition-colors">
                                 {currentUser.avatar ? (
                                     <img
                                         src={currentUser.avatar}
@@ -161,59 +204,36 @@ const Header = ({ toggleSidebar }) => {
                             </div>
                             {/* Dropdown Menu */}
                             {showMenu && (
-                                <div className="flex flex-col absolute right-0 mt-2 w-48 bg-white border dark:bg-neutral-800 border-gray-200 dark:border-neutral-700 rounded-lg shadow-lg py-2 z-50">
-                                    <button onClick={viewChannelPage}
-                                        className="px-4 py-2 border-b border-gray-100 text-left hover:bg-gray-100 dark:hover:bg-neutral-700">
-                                        <p className="text-sm font-semibold">{currentUser.username}</p>
+                                <div className="absolute right-0 mt-2 w-56 bg-white border dark:bg-neutral-800 border-gray-200 dark:border-neutral-700 rounded-xl shadow-xl py-2 z-50">
+                                    <div className="px-4 py-3 border-b dark:border-neutral-700">
+                                        <p className="text-sm font-bold truncate">{currentUser.username}</p>
                                         <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
+                                    </div>
+                                    <button onClick={viewChannelPage} className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-neutral-700">Your Channel</button>
+                                    <button onClick={() => dispatch(toggleTheme())} className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-neutral-700 flex items-center justify-between">
+                                        <span>Appearance</span>
+                                        <span className="text-xs text-gray-400">{darkMode ? 'Dark' : 'Light'}</span>
                                     </button>
-
-                                    {/* Actions */}
-                                    <button
-                                        onClick={handleLogout}
-                                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
-                                        Sign out
-                                    </button>
-                                    <button onClick={() => setOpenChannelModal(true)}
-                                        className="w-full text-left px-4 py-2 text-md text-blue-800 dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
-                                        Create Channel
-                                    </button>
-                                    {/* Channel Creation Modal */}
-                                    {openChannelModal && <CreateChannel setOpen={setOpenChannelModal} />}
-                                    
-                                    {/* Dark Mode Toggle */}
-                                    <button
-                                        onClick={() => dispatch(toggleTheme())}
-                                        className="w-full flex items-center gap-4 px-4 py-3 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors">
-                                        {darkMode ? (
-                                            <>  
-                                                <MdOutlineDarkMode className="text-2xl" />
-                                                <span className="text-sm">Appearance: Dark</span>
-                                            </>
-                                        ) : (
-                                            <>  
-                                                <MdOutlineLightMode className="text-2xl" />
-                                                <span className="text-sm">Appearance: Light</span>
-                                            </>
-                                        )}
-                                    </button>
+                                    <button onClick={() => setOpenChannelModal(true)} className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-neutral-700">Create New Channel</button>
+                                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 border-t dark:border-neutral-700 mt-1">Sign out</button>
                                 </div>
                             )}
                         </div>
                     </>
                 ) : (
                     /* LOGGED OUT STATE */
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-2  md:gap-4">
                         <div className="cursor-pointer hover:bg-gray-200 rounded-full p-2 dark:hover:bg-neutral-700">
-                            <BsThreeDotsVertical className="text-xl" />
+                            <BsThreeDotsVertical className="text-xl hidden sm:block" />
                         </div>
                         <Link to="/login" className="text-blue-600 flex items-center gap-2 text-xl border rounded-full border-gray-300 px-3 h-10 cursor-pointer hover:bg-blue-100 transition-colors">
-                            <FaRegCircleUser />
-                            <span className="text-[15px] font-medium">Sign in</span>
+                            <FaRegCircleUser className="text-xl" />
+                            <span className="text-sm font-medium">Sign in</span>
                         </Link>
                     </div>
                 )}
             </div>
+            {openChannelModal && <CreateChannel setOpen={setOpenChannelModal} />}
         </header >
     );
 };

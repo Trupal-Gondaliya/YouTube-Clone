@@ -50,9 +50,11 @@ const CreateChannel = ({ setOpen }) => {
 
     return (
         //Modal Overlay: Dims the background and centers the modal
-        <div className="fixed inset-0 top-14 bg-black/50 backdrop-blur-sm flex items-center justify-center z-100">
+        <div onClick={() => setOpen(false)} className="fixed top-14 inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
             {/* Modal Container: Handles the white/dark mode card styling */}
-            <div className="bg-white w-112.5 p-8 rounded-2xl shadow-2xl flex flex-col gap-4 dark:bg-neutral-800 dark:text-white">
+            <div
+                onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside the box
+                className="bg-white w-full max-w-112.5 p-6 sm:p-8 rounded-2xl shadow-2xl flex flex-col gap-4 dark:bg-neutral-800 dark:text-white">
                 <h2 className="text-xl font-bold">Channel Details</h2>
 
                 {/* Input: Updates the channel name state on change */}

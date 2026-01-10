@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance.js";
 import SearchVideoCard from "./SearchVideoCard.jsx";
 import { HiOutlineVideoCameraSlash } from "react-icons/hi2";
+import { useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
   // State to store the list of videos returned from the API
@@ -10,6 +11,9 @@ const SearchPage = () => {
 
   // Extract the search query ('q') from the URL parameters (e.g., /search?q=coding)
   const query = new URLSearchParams(useLocation().search).get("q");
+
+  // use navigator
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetches videos from the backend based on the search query.
@@ -42,6 +46,11 @@ const SearchPage = () => {
             There are currently no videos in the
             <span className="font-bold text-gray-700 dark:text-white"> "{query}"</span> category.
           </p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition shadow-md">
+            Browse all videos
+          </button>
         </div>
       )}
     </div>

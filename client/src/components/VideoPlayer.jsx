@@ -19,6 +19,7 @@ const VideoPlayer = () => {
     const dispatch = useDispatch(); // Used to update Redux state
     const [isExpandedDesc, setIsExpandedDesc] = useState(false); // Toggle for "read more" description
     const [watchLater, setWatchLater] = useState([]); // Local state for user's watch list
+    const [isExpandedComments, setIsExpandedComments] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -157,7 +158,7 @@ const VideoPlayer = () => {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row gap-6 p-4 lg:px-12 min-h-screen">
+        <div className="flex flex-col md:flex-row gap-6 p-4 lg:px-12 min-h-screen">
             {/* LEFT SIDE: Video & Details */}
             <div className="flex-2">
                 {/* 1. Video Player */}
@@ -207,8 +208,8 @@ const VideoPlayer = () => {
                         </button>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                        <div className="flex items-center bg-gray-100 rounded-full overflow-hidden dark:bg-neutral-800">
+                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-3 scroll-smooth">
+                        <div className="flex items-center bg-gray-100 rounded-full dark:bg-neutral-800">
                             <button onClick={handelLike} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 border-r border-gray-300 dark:hover:bg-neutral-700">
                                 {video.likes.includes(currentUser?._id) ? (
                                     <AiFillLike className="text-xl text-blue-600" />
@@ -266,8 +267,21 @@ const VideoPlayer = () => {
 
                 {/* 5. Comment Section */}
                 <div className="mt-6">
-                    {/* <h2 className="text-lg font-bold mb-4">Comments</h2> */}
-                    <Comments videoId={video._id} />
+                    {/* Mobile Toggle Wrapper: Only applies truncation on small screens */}
+                    <div className={`
+                        relative overflow-hidden transition-all duration-300
+                        ${!isExpandedComments ? "max-h-62.5 md:max-h-full" : "max-h-full"}
+                    `}>
+                        <Comments videoId={video._id} />
+                    </div>
+
+                    {/* Mobile Only "Show more" Button */}
+                    <button
+                        onClick={() => setIsExpandedComments(!isExpandedComments)}
+                        className="w-full py-3 text-sm font-bold text-blue-600 dark:text-blue-400 md:hidden bg-gray-100 dark:bg-neutral-800 mt-2 rounded-lg"
+                    >
+                        {isExpandedComments ? "Show less" : "Read more comments"}
+                    </button>
                 </div>
             </div>
 

@@ -22,11 +22,11 @@ const Signup = () => {
     };
 
     return (
-        <div className=" flex flex-col items-center justify-center min-h-[calc(100vh-56px)] bg-gray-50 dark:bg-black">
-            <div className="relative bg-white p-8 border border-gray-300 rounded-lg shadow-sm w-full max-w-md dark:bg-neutral-800">
+        <div className=" flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-black px-4">
+            <div className="relative bg-white p-6 sm:p-8 border border-gray-300 rounded-lg shadow-sm w-full max-w-112.5 dark:bg-neutral-800">
                 {/* Close/Exit button redirecting to home */}
                 <Link to="/">
-                    <div className='absolute top-4 right-8'>&#10060;</div>
+                    <div className='absolute top-3 right-3 sm:right-7 sm:top-4'>&#10060;</div>
                 </Link>
                 <div className="flex flex-col items-center mb-6">
                     <h1 className="text-2xl font-semibold mb-2">Create your Account</h1>

@@ -54,7 +54,7 @@ const YouTab = () => {
                                     className="w-full h-full object-cover"
                                 />
                             ) : (
-                                <span>{currentUser.username.chatAt(0).toUpperCase()}</span>
+                                <span>{currentUser.username.charAt(0).toUpperCase()}</span>
                             )}
                         </div>
                         <div className="flex flex-col items-center md:items-start gap-1">

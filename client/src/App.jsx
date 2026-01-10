@@ -16,8 +16,9 @@ function App() {
 
   return (
     <div className={darkMode ? "dark" : ""}>
-      <div className="flex flex-col h-screen transition-colors duration-300 bg-white dark:bg-black">
-        <Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+      <div className="flex flex-col h-screen transition-colors duration-300 bg-[#f9f9f9] dark:bg-black">
+
+        {!isAuthPage && (<Header toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />)}
 
         <div className="flex flex-1 overflow-hidden relative">
           {/* Only show Sidebar if we are NOT on a login/signup page */}
@@ -29,12 +30,13 @@ function App() {
 
           {/* Main Content Area */}
           <main className={`flex-1 overflow-y-auto transition-all duration-300 bg-[#f9f9f9] text-black dark:bg-black dark:text-white
-            ${!isAuthPage && isSidebarOpen ? 'ml-60' : 'ml-20'} 
+            ml-0
+            ${!isAuthPage && isSidebarOpen ? 'md:ml-60' : 'md:ml-20'} 
             ${isAuthPage ? 'ml-0' : ''}`}
           >
             <Suspense fallback={<div className="p-10 text-center">Loading Page...</div>}>
               <Outlet context={{ isSidebarOpen }} />
-            </Suspense>            
+            </Suspense>
           </main>
         </div>
       </div>

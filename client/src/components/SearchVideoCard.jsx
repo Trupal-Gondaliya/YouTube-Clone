@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 const SearchVideoCard = ({ video }) => {
     return (
         // Link wraps the entire card to make it clickable.
-        <Link to={`/video/${video._id}`} className="flex flex-col md:flex-row gap-4 mb-5 group cursor-pointer">
-            <div className="relative w-full md:w-96 h-52 shrink-0 overflow-hidden rounded-xl">
+        <Link to={`/video/${video._id}`} className="flex flex-col md:flex-row gap-2 mb-5 group cursor-pointer">
+            <div className="relative w-full md:w-96 shrink-0 overflow-hidden md:rounded-xl aspect-video">
                 <img
                     src={video.thumbnailUrl}
                     alt={video.title}

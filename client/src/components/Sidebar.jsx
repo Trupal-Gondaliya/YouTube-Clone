@@ -21,12 +21,13 @@ import { useSelector } from "react-redux";
 import axiosInstance from "../utils/axiosInstance";
 
 // sidebar item
-const SidebarItem = ({ icon, label, isOpen }) => (
-    <div className={`flex items-center rounded-lg cursor-pointer transition-colors
+const SidebarItem = ({ icon, label, isOpen, onClick }) => (
+    <div onClick={onClick}
+        className={`flex items-center rounded-lg cursor-pointer transition-colors
         ${isOpen
-            ? "flex-row gap-5 p-2 px-3 hover:bg-gray-100 dark:hover:bg-neutral-800"
-            : "flex-col gap-1 py-4 hover:bg-gray-100 justify-center items-center text-[10px] dark:hover:bg-neutral-800"
-        }`}>
+                ? "flex-row gap-5 p-2 px-3 hover:bg-gray-200 dark:hover:bg-neutral-800"
+                : "flex-col gap-1 py-4 hover:bg-gray-200 justify-center items-center text-[10px] dark:hover:bg-neutral-800"
+            }`}>
         <span className={`${isOpen ? "text-xl" : "text-2xl"}`}>{icon}</span>
         <span className={`${isOpen ? "text-sm" : "text-[10px]"} truncate`}>{label}</span>
     </div>
@@ -75,10 +76,10 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <>
             {/* MAIN SIDEBAR CONTAINER */}
             <aside className={`fixed left-0 transition-all duration-200 ease-in-out overflow-y-auto bg-[#f9f9f9] text-black dark:bg-black dark:text-white
-                ${isOpen
-                    ? "w-60 px-3 top-0 h-screen z-60 shadow-xl"
-                    : "w-20 px-1 h-[calc(100vh-56px)] z-50"
-                }
+                ${isOpen ? "translate-x-0 w-full h-full" : "-translate-x-full w-full"}
+                md:translate-x-0 md:block z-100
+                ${isOpen ? "md:w-60 px-3 top-0 shadow-xl h-screen" : "md:w-20 px-1 h-[calc(100vh-56px)]"}
+
                 [&::-webkit-scrollbar]:w-2 
                 /* Track Color */
                 [&::-webkit-scrollbar-track]:bg-gray-100 
@@ -91,7 +92,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 {/* SIDEBAR HEADER: Only visible when open (contains Logo and Burger) */}
                 {isOpen && (
                     <div className="sticky flex items-center gap-4 h-16 px-1 top-0 z-10 bg-[#f9f9f9] text-black dark:bg-black dark:text-white">
-                        <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-neutral-800 rounded-full text-2xl">
+                        <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-full text-2xl">
                             <HiMenu />
                         </button>
                         <div className="flex items-center gap-1 cursor-pointer">
@@ -102,7 +103,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 )}
 
                 {/* CORE NAVIGATION SECTION */}
-                <Link to="/"><SidebarItem icon={<IoMdHome />} label="Home" isOpen={isOpen} active className="top-14" /></Link>
+                <Link to="/"><SidebarItem icon={<IoMdHome />} label="Home" isOpen={isOpen} active className="top-14" onClick={toggleSidebar} /></Link>
                 <SidebarItem icon={<SiYoutubeshorts />} label="Shorts" isOpen={isOpen} />
                 <SidebarItem icon={<MdOutlineSubscriptions />} label="Subscriptions" isOpen={isOpen} />
 
@@ -111,14 +112,20 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
                 {currentUser && isOpen ? (
                     <div>
                         <div className="rounded-lg cursor-pointer transition-colors p-2 px-3 hover:bg-gray-100 dark:hover:bg-neutral-800">
-                            <Link to="/you"><button className="font-bold">You &gt;</button></Link>
+                            <Link to="/you"><button  onClick={toggleSidebar} className="font-bold">You &gt;</button></Link>
                         </div>
                         <SidebarItem icon={<LuHistory />} label="History" isOpen={isOpen} />
-                        <SidebarItem icon={<MdOutlinePlaylistPlay />} label="Playlists" isOpen={isOpen} />
+                        <Link to="/you">
+                            <SidebarItem icon={<MdOutlinePlaylistPlay />} label="Playlists" isOpen={isOpen} onClick={toggleSidebar} />
+                        </Link>
                         <SidebarItem icon={<CiYoutube />} label="Your videos" isOpen={isOpen} />
                         <SidebarItem icon={<SlGraduation />} label="Your courses" isOpen={isOpen} />
-                        <SidebarItem icon={<MdOutlineWatchLater />} label="Watch later" isOpen={isOpen} />
-                        <SidebarItem icon={<AiOutlineLike />} label="Liked videos" isOpen={isOpen} />
+                        <Link to="/playlist/watchlater">
+                            <SidebarItem icon={<MdOutlineWatchLater />} label="Watch later" isOpen={isOpen} onClick={toggleSidebar} />
+                        </Link>
+                        <Link to="/playlist/liked">
+                            <SidebarItem icon={<AiOutlineLike />} label="Liked videos" isOpen={isOpen} onClick={toggleSidebar} />
+                        </Link>
 
                         <hr className="my-3 border-gray-200" />
 

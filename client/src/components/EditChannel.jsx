@@ -93,7 +93,7 @@ const EditChannel = ({ setOpen, channel }) => {
         /* Overlay Backdrop */
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-200 p-4">
             {/* Modal Container */}
-            <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div className="bg-white rounded-2xl w-[95%] sm:w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh] dark:bg-neutral-900 border dark:border-neutral-800">
                 {/* Header */}
                 <div className="p-6 border-b flex justify-between items-center bg-gray-50 dark:bg-neutral-800">
                     <h2 className="text-xl font-bold text-gray-800 dark:text-white">Edit Channel Settings</h2>
@@ -136,8 +136,8 @@ const EditChannel = ({ setOpen, channel }) => {
                         </div>
                         <div className="flex flex-col gap-2">
                             <label className="text-sm font-semibold text-gray-700 dark:text-white">Profile Picture</label>
-                            <div className="flex gap-2">
-                                <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'avatar')} className="text-xs text-gray-500 file:py-1 file:px-3 file:rounded-md file:border-0 file:bg-gray-100 hover:file:bg-gray-200 " />
+                            <div className="sm:flex gap-2">
+                                <input type="file" accept="image/*" onChange={e => handleFileChange(e, 'avatar')} className="text-xs text-gray-500 file:py-1 sm:file:px-3 file:rounded-md file:border-0 file:bg-gray-100 hover:file:bg-gray-200 overflow-hidden " />
                                 <button onClick={removeAvatar} className="text-xs text-red-600 font-medium">Remove</button>
                             </div>
                         </div>
