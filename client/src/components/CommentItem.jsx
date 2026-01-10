@@ -30,7 +30,7 @@ const CommentItem = ({ comment, setComments, comments }) => {
   return (
     <div className="flex gap-4 mb-6 group">
       <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white shrink-0">
-        {comment.userId?.avatar ? <img src={comment.userId?.avatar} className="rounded-full w-full h-full object-cover" /> : comment.userId?.username?.charAt(0)}
+        {comment.userId?.avatar ? <img src={comment.userId?.avatar} loading="lazy" className="rounded-full w-full h-full object-cover" /> : comment.userId?.username?.charAt(0)}
       </div>
       <div className="flex flex-col flex-1 gap-1">
         <div className="flex items-center gap-2">

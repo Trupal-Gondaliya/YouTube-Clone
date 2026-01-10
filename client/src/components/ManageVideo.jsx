@@ -64,7 +64,7 @@ const ManageVideo = () => {
                                 <tr key={video._id} className="hover:bg-blue-50/30 transition-colors dark:hover:bg-neutral-700">
                                     <td className="p-4 flex gap-4 items-center">
                                         <div className="relative group">
-                                            <img src={video.thumbnailUrl} className="w-28 h-16 object-cover rounded-lg shadow-sm" />
+                                            <img src={video.thumbnailUrl} loading="lazy" className="w-28 h-16 object-cover rounded-lg shadow-sm" />
                                         </div>
                                         <div className="flex flex-col">
                                             <span className="font-semibold text-gray-800 line-clamp-1 w-48 dark:text-white">{video.title}</span>

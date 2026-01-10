@@ -36,7 +36,7 @@ const Comments = ({ videoId }) => {
             <h3 className="font-bold mb-4">{comments.length} Comments</h3>
             <div className="flex gap-4 mb-8">
                 <div className="w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white shrink-0">
-                    {currentUser?.avatar ? <img src={currentUser.avatar} className="rounded-full w-full h-full object-cover" /> : currentUser?.username?.charAt(0)}
+                    {currentUser?.avatar ? <img src={currentUser.avatar} loading="lazy" className="rounded-full w-full h-full object-cover" /> : currentUser?.username?.charAt(0)}
                 </div>
                 <div className="flex flex-col w-full gap-2">
                     <input

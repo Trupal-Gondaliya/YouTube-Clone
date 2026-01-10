@@ -99,7 +99,7 @@ const EditChannel = ({ setOpen, channel }) => {
                         <div className="relative group h-32 w-full bg-gray-100 rounded-xl overflow-hidden border-2 border-dashed border-gray-300">
                             {bannerPreview ? (
                                 <>
-                                    <img src={bannerPreview} alt="Banner" className="w-full h-full object-cover" />
+                                    <img src={bannerPreview} alt="Banner" loading="lazy" className="w-full h-full object-cover" />
                                     <button onClick={removeBanner} className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                                         <FaXmark className="w-4 h-4" />
                                     </button>
@@ -118,7 +118,7 @@ const EditChannel = ({ setOpen, channel }) => {
                     <div className="flex items-center gap-6">
                         <div className="relative group h-20 w-20 bg-gray-100 rounded-full overflow-hidden border-2 border-gray-200 shrink-0">
                             {avatarPreview ? (
-                                <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+                                <img src={avatarPreview} alt="Avatar" loading="lazy" className="w-full h-full object-cover" />
                             ) : (
                                 <FaRegUser className="w-full h-full text-gray-300 p-5" />
                             )}

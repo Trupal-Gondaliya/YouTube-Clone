@@ -90,6 +90,7 @@ const ChannelPage = () => {
                         src={channel.channelBanner}
                         alt="Banner"
                         className="w-full h-full object-cover"
+                        loading="lazy"
                     />
                 ) : (
                     <div className="w-full h-full bg-linear-to-r from-gray-300 to-gray-400" />
@@ -103,6 +104,7 @@ const ChannelPage = () => {
                         <img
                             src={channel.owner.avatar}
                             alt={channel.owner.username}
+                            loading="lazy"
                             className="w-full h-full object-cover rounded-full"
                         />
                     ) : (

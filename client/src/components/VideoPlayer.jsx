@@ -170,6 +170,7 @@ const VideoPlayer = () => {
                                         <img
                                             src={video.uploader?.avatar}
                                             alt={video.uploader?.username}
+                                            loading="lazy"
                                             className="w-full h-full object-cover rounded-full"
                                         />
                                     ) : (

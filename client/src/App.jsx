@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import { useState } from 'react';
 import { Outlet, useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { Suspense } from 'react';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,9 +29,12 @@ function App() {
 
           {/* Main Content Area */}
           <main className={`flex-1 overflow-y-auto transition-all duration-300 bg-[#f9f9f9] text-black dark:bg-black dark:text-white
-          ${!isAuthPage && isSidebarOpen ? 'ml-60' : 'ml-20'} 
-          ${isAuthPage ? 'ml-0' : ''}`}>
-            <Outlet context={{ isSidebarOpen }} />
+            ${!isAuthPage && isSidebarOpen ? 'ml-60' : 'ml-20'} 
+            ${isAuthPage ? 'ml-0' : ''}`}
+          >
+            <Suspense fallback={<div className="p-10 text-center">Loading Page...</div>}>
+              <Outlet context={{ isSidebarOpen }} />
+            </Suspense>            
           </main>
         </div>
       </div>

@@ -77,7 +77,7 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
                     <div className="space-y-2">
                         <label className="text-sm font-semibold text-gray-700 dark:text-white">Thumbnail</label>
                         <div className="relative group h-32 w-full bg-gray-100 rounded-xl overflow-hidden border-2 border-dashed border-gray-300">
-                            <img src={inputs.thumbnailUrl} alt="Thumbnail" className="w-full h-full object-cover" />
+                            <img src={inputs.thumbnailUrl} alt="Thumbnail" loading="lazy" className="w-full h-full object-cover" />
                         </div>
                         <input type="file" accept="image/*" onChange={e => handleFileChange(e)} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
                     </div>

@@ -8,6 +8,7 @@ const SearchVideoCard = ({ video }) => {
                 <img
                     src={video.thumbnailUrl}
                     alt={video.title}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
             </div>
@@ -25,7 +26,7 @@ const SearchVideoCard = ({ video }) => {
                 <div className="flex items-center gap-2 my-4">
                     <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden">
                         {video.uploader?.avatar ? (
-                            <img src={video.uploader.avatar} alt="avatar" className="w-full h-full object-cover" />
+                            <img src={video.uploader.avatar} alt="avatar" loading="lazy" className="w-full h-full object-cover" />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center bg-purple-600 text-[10px] text-white">
                                 {video.uploader?.username?.charAt(0).toUpperCase()}

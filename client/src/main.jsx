@@ -1,38 +1,106 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import Home from './components/Home.jsx'
-import Signup from './components/Signup.jsx'
-import Login from './components/Login.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Provider } from "react-redux"
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/appStore.js';
-import ChannelPage from './components/ChannelPage.jsx'
-import UploadVideo from './components/UploadVideo.jsx'
-import VideoPlayer from './components/VideoPlayer.jsx'
-import ManageVideo from './components/ManageVideo.jsx'
-import SearchPage from './components/SearchPage.jsx'
-import YouTab from './components/YouTab.jsx'
-import WatchLaterAll from './components/WatchLaterAll.jsx'
-import LikesVideoAll from './components/LikesVideoAll.jsx'
+import { lazy, Suspense } from 'react';
+
+const Home = lazy(() => import('./components/Home.jsx'));
+const Signup = lazy(() => import('./components/Signup.jsx'));
+const Login = lazy(() => import('./components/Login.jsx'));
+const ChannelPage = lazy(() => import('./components/ChannelPage.jsx'));
+const UploadVideo = lazy(() => import('./components/UploadVideo.jsx'));
+const VideoPlayer = lazy(() => import('./components/VideoPlayer.jsx'));
+const ManageVideo = lazy(() => import('./components/ManageVideo.jsx'));
+const SearchPage = lazy(() => import('./components/SearchPage.jsx'));
+const YouTab = lazy(() => import('./components/YouTab.jsx'));
+const WatchLaterAll = lazy(() => import('./components/WatchLaterAll.jsx'));
+const LikesVideoAll = lazy(() => import('./components/LikesVideoAll.jsx'));
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      { path: "/", element: <Home /> },
-      { path: "/login", element: <Login /> },
-      { path: "/signup", element: <Signup /> },
-      { path: "/channel/:id", element: <ChannelPage />},
-      {path: "/upload", element: <UploadVideo />},
-      {path: "/video/:id", element: <VideoPlayer />},
-      {path: "/channel/:id/manage", element: <ManageVideo />},
-      {path: "/search", element: <SearchPage />},
-      {path: "/you", element: <YouTab />},
-      {path: "/playlist/watchlater", element: <WatchLaterAll />},
-      {path: "/playlist/liked", element: <LikesVideoAll />}
+      { path: "/", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+          </Suspense>
+          )
+      },
+      { path: "/login", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Login /> 
+          </Suspense>
+        )
+      },
+      { path: "/signup",
+         element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Signup />
+          </Suspense> 
+        )
+      },
+      { path: "/channel/:id", 
+        element: (
+        <Suspense fallback={<div>Loading...</div>}>
+              <ChannelPage />
+        </Suspense>
+      )
+      },
+      {path: "/upload", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <UploadVideo />  
+          </Suspense>
+        )
+      },
+      {path: "/video/:id", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <VideoPlayer />
+          </Suspense>
+        )
+      },
+      {path: "/channel/:id/manage", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <ManageVideo />
+          </Suspense>
+        )
+      },
+      {path: "/search", 
+        element:(
+          <Suspense fallback={<div>Loading...</div>}>
+            <SearchPage />
+          </Suspense>
+        )
+      },
+      {path: "/you", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <YouTab />
+          </Suspense>
+        )
+      },
+      {path: "/playlist/watchlater", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <WatchLaterAll />
+          </Suspense>
+        )
+      },
+      {path: "/playlist/liked", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <LikesVideoAll />
+          </Suspense>
+        )
+      }
     ],
   },
 ])

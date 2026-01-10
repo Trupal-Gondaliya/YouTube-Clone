@@ -92,7 +92,7 @@ const YouTab = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                 {watchLater.slice(0, 4).map(video => (
                                     <Link to={`/video/${video._id}`} key={video._id} className="flex flex-col gap-2">
-                                        <img src={video.thumbnailUrl} className="rounded-xl aspect-video object-cover" />
+                                        <img src={video.thumbnailUrl} loading="lazy" className="rounded-xl aspect-video object-cover" />
                                         <h3 className="text-sm font-medium line-clamp-2">{video.title}</h3>
                                     </Link>
                                 ))}
