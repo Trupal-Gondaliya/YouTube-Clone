@@ -8,7 +8,9 @@ export const addComment = async (req, res) => {
     await Video.findByIdAndUpdate(req.body.videoId, {
       $push: { comments: savedComment._id },
     });
-    res.status(201).json(savedComment);
+    const populatedComment = await Comment.findById(savedComment._id)
+      .populate("userId", "username avatar");
+    res.status(201).json(populatedComment);
   } catch (err) {
     res.status(500).json(err);
   }
