@@ -1,10 +1,13 @@
 import Video from "../models/Video.js";
 import Channel from "../models/Channel.js";
 
+//  add video controller
 export const addVideo = async (req, res) => {
   try {
     const newVideo = new Video({ ...req.body, uploader: req.user.id });
+    // save to DB
     const savedVideo = await newVideo.save();
+    // add video ref in Channel document
     await Channel.findByIdAndUpdate(req.body.channelId, {
       $push: { videos: savedVideo._id },
     });
@@ -14,11 +17,13 @@ export const addVideo = async (req, res) => {
   }
 };
 
+//  update video controller
 export const updateVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
     if (!video) return res.status(404).json({ message: "Video not found" });
 
+    // update if requested user and video owner id is same
     if (req.user.id === video.uploader.toString()) {
       const updatedVideo = await Video.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
       res.status(200).json(updatedVideo);
@@ -30,6 +35,7 @@ export const updateVideo = async (req, res) => {
   }
 };
 
+// delete video controller
 export const deleteVideo = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
@@ -89,17 +95,20 @@ export const getVideo = async (req, res) => {
   }
 };
 
+// like video controller
 export const likeVideo = async (req, res) => {
   const userId = req.user.id;
   const videoId = req.params.id;
   try {
     const video = await Video.findById(videoId);
+    // if like then remove
     if (video.likes.includes(userId)) {
       await Video.findByIdAndUpdate(videoId, {
         $pull: { likes: userId }
       });
       res.status(200).json("The like has been removed.");
     } else {
+      // like video
       await Video.findByIdAndUpdate(videoId, {
         $addToSet: { likes: userId },
         $pull: { dislikes: userId }
@@ -111,17 +120,20 @@ export const likeVideo = async (req, res) => {
   }
 };
 
+// dislike video controller
 export const dislikeVideo = async (req, res) => {
   const userId = req.user.id;
   const videoId = req.params.id;
   try {
     const video = await Video.findById(videoId);
+    // if dislike than remove
     if (video.dislikes.includes(userId)) {
       await Video.findByIdAndUpdate(videoId, {
         $pull: { dislikes: userId }
       });
       res.status(200).json("The dislike has been removed.");
     } else {
+      // dislike video
       await Video.findByIdAndUpdate(videoId, {
         $addToSet: { dislikes: userId },
         $pull: { likes: userId }
@@ -133,6 +145,7 @@ export const dislikeVideo = async (req, res) => {
   }
 };
 
+// search video controller
 export const searchVideos = async (req, res) => {
   const query = req.query.q;
   try {
@@ -150,6 +163,7 @@ export const searchVideos = async (req, res) => {
   }
 };
 
+// get video by category controller
 export const getByCategory = async (req, res) => {
   const category = req.query.cat;
   try {
@@ -160,6 +174,7 @@ export const getByCategory = async (req, res) => {
   }
 };
 
+// all likes video controller
 export const allLikesVideo = async (req, res) => {
   const userId = req.user.id;
   try {

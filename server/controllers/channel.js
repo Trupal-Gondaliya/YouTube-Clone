@@ -2,9 +2,11 @@ import Channel from "../models/Channel.js";
 import User from "../models/User.js";
 import Video from "../models/Video.js";
 
+// createChannel controller
 export const createChannel = async (req, res) => {
   try {
     const newChannel = new Channel({ ...req.body, owner: req.user.id });
+    // sace channel to DB
     const savedChannel = await newChannel.save();
 
     // Update user to include this channel ID 
@@ -19,6 +21,7 @@ export const createChannel = async (req, res) => {
   }
 };
 
+// get channel controller
 export const getChannel = async (req, res) => {
   try {
     // We populate 'videos' so we get the full video objects (title, views, etc.) 
@@ -34,8 +37,10 @@ export const getChannel = async (req, res) => {
   }
 };
 
+// update channel data controller
 export const updateChannel = async (req, res) => {
   try {
+    // find channel by id
     const channel = await Channel.findById(req.params.id);
     if (!channel) return res.status(404).json("Channel not found");
 
@@ -64,8 +69,10 @@ export const updateChannel = async (req, res) => {
   }
 };
 
+// delere channel controller
 export const deleteChannel = async (req, res) => {
   try {
+    // find channel by ID
     const channel = await Channel.findById(req.params.id);
     if (!channel) return res.status(404).json("Channel not found");
 
@@ -90,19 +97,23 @@ export const deleteChannel = async (req, res) => {
   }
 };
 
+// subscribe functionality controller
 export const subscriberChannel = async (req, res) => {
-  const userId = req.user.id;
-  const channelId = req.params.id;
+  const userId = req.user.id; //get user id
+  const channelId = req.params.id; //get channel id
   try {
+    // find channel by ID
     const channel = await Channel.findById(channelId);
     if (!channel) return res.status(404).json("Channel not found");
 
+    // if channel already subscribed
     if (channel.subscribers.includes(userId)) {
       await Channel.findByIdAndUpdate(channelId, { 
         $pull: { subscribers: userId }
       });
       res.status(200).json("Unsubscribed successfully");
     } else {
+      // subscribe channel
       await Channel.findByIdAndUpdate(channelId, {
         $addToSet: {subscribers : userId}
       });
@@ -113,6 +124,7 @@ export const subscriberChannel = async (req, res) => {
   }
 };
 
+// subscriber list controller
 export const subscribeChannelList = async (req, res) => {
   try {
     const channels = await Channel.find({

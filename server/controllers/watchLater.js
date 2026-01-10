@@ -1,5 +1,6 @@
 import WatchLater from "../models/WatchLater.js";
 
+// watch latter toggle controller
 export const toggleWatchLater = async (req, res) => {
   try {
     const existing = await WatchLater.findOne({ userId: req.user.id, videoId: req.params.videoId });
@@ -15,6 +16,7 @@ export const toggleWatchLater = async (req, res) => {
   }
 };
 
+// get all watchlater videos controller
 export const getWatchLaterVideos = async (req, res) => {
   try {
     const list = await WatchLater.find({ userId: req.user.id })
