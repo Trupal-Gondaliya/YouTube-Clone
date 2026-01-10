@@ -18,6 +18,7 @@ const SearchPage = lazy(() => import('./components/SearchPage.jsx'));
 const YouTab = lazy(() => import('./components/YouTab.jsx'));
 const WatchLaterAll = lazy(() => import('./components/WatchLaterAll.jsx'));
 const LikesVideoAll = lazy(() => import('./components/LikesVideoAll.jsx'));
+const AllChannel = lazy(() => import('./components/AllChannel.jsx'))
 
 const Router = createBrowserRouter([
   {
@@ -98,6 +99,13 @@ const Router = createBrowserRouter([
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <LikesVideoAll />
+          </Suspense>
+        )
+      },
+      {path: "/allChannel",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AllChannel />
           </Suspense>
         )
       }

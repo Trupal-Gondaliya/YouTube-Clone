@@ -54,6 +54,18 @@ const Header = ({ toggleSidebar }) => {
         }
     }
 
+    // functio to view all channel list
+    const viewAllchannel = () => {
+        setShowMenu(false);
+        if (currentUser?.channels && currentUser.channels.length > 0) {
+            // Navigate to the channel list
+            navigate(`/allChannel`);
+        } else {
+            alert("You don't have a channel yet. Create one first!");
+            setOpenChannelModal(true);
+        }
+    }
+
     // Handles search submission via button or Enter key.
     const handleSearchClick = (e) => {
         if (searchInput.trim()) {
@@ -186,7 +198,7 @@ const Header = ({ toggleSidebar }) => {
                                 </div>
                             )}
                         </div>
-                        <div className="hidden xs:block cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full">
+                        <div className="hidden sm:block cursor-pointer hover:bg-gray-100 dark:hover:bg-neutral-800 p-2 rounded-full">
                             <IoMdNotificationsOutline className="text-2xl" />
                         </div>
                         {/* User Avatar Circle */}
@@ -215,7 +227,8 @@ const Header = ({ toggleSidebar }) => {
                                         <span className="text-xs text-gray-400">{darkMode ? 'Dark' : 'Light'}</span>
                                     </button>
                                     <button onClick={() => setOpenChannelModal(true)} className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-neutral-700">Create New Channel</button>
-                                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 border-t dark:border-neutral-700 mt-1">Sign out</button>
+                                    <button onClick={viewAllchannel} className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-neutral-700">View All Channel</button>
+                                    <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 border-t dark:border-neutral-700 mt-1">Sign out</button>
                                 </div>
                             )}
                         </div>
