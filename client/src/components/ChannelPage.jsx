@@ -1,3 +1,4 @@
+// import all required file
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance.js';
@@ -12,13 +13,14 @@ import { CiYoutube } from "react-icons/ci";
 import { BiUserVoice } from "react-icons/bi";
 
 const ChannelPage = () => {
-    const { id } = useParams();
-    const [channel, setChannel] = useState(null);
-    const { currentUser } = useSelector(state => state.user);
-    const [openEdit, setOpenEdit] = useState(false);
+    const { id } = useParams(); // id from url paramter
+    const [channel, setChannel] = useState(null); //all channel data
+    const { currentUser } = useSelector(state => state.user); //login user info
+    const [openEdit, setOpenEdit] = useState(false); 
     const dispatch = useDispatch();
     const [isExpandedDesc, setIsExpandedDesc] = useState(false);
 
+    // get channel data from api
     useEffect(() => {
         const fetchChannel = async () => {
             try {
@@ -36,6 +38,7 @@ const ChannelPage = () => {
 
     const isOwner = currentUser?._id === channel.owner?._id;
 
+    // delete channel
     const handleDeleteChannel = async () => {
         if (window.confirm("Are you sure you want to delete this channel? All videos will be lost.")) {
             try {
@@ -50,6 +53,7 @@ const ChannelPage = () => {
         }
     };
 
+    // subscribe handler functionality
     const handelSubscribe = async () => {
         if (!currentUser) return alert("Please login to subscribe to the channel!!");
         const targetChannelId = channel._id || channel.id;
@@ -77,8 +81,8 @@ const ChannelPage = () => {
         }
     }
 
+    // slice description
     const descriptionLimit = 80;
-
     const displayText = channel.description?.slice(0, descriptionLimit);
 
     return (
@@ -101,6 +105,7 @@ const ChannelPage = () => {
             <div className="px-4 md:px-24 py-6 flex flex-col md:flex-row items-center gap-6">
                 <div className="w-32 h-32 bg-purple-700 rounded-full flex items-center justify-center text-white text-4xl font-bold">
                     {channel.owner?.avatar ? (
+                        // User Profile Picture or Initial Placeholder 
                         <img
                             src={channel.owner.avatar}
                             alt={channel.owner.username}
@@ -108,9 +113,11 @@ const ChannelPage = () => {
                             className="w-full h-full object-cover rounded-full"
                         />
                     ) : (
+                        // Fallback: Display the first letter of the username if no avatar exists
                         <span>{channel.owner?.username?.charAt(0).toUpperCase()}</span>
                     )}
                 </div>
+                {/* channel data */}
                 <div className="flex flex-col items-center md:items-start gap-2">
                     <h1 className="text-3xl font-bold">{channel.channelName}</h1>
                     <p className="text-gray-600 font-medium dark:text-white"><span className='text-black dark:text-white'>@{channel.channelName.replace(/\s+/g, '').toLowerCase()}</span> • {channel.subscribers.length || 0} subscribers • {channel.videos.length} videos</p>
@@ -125,6 +132,7 @@ const ChannelPage = () => {
                             ...more
                         </button>
                     </div>
+                    {/* show all details about channel */}
                     {isExpandedDesc && (
                         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => setIsExpandedDesc(false)}>
                             <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full relative h-[90%] flex flex-col overflow-hidden dark:bg-neutral-800">
@@ -179,6 +187,7 @@ const ChannelPage = () => {
                             </Link>
                         </div>
                     )}
+                    {/* subscribe button */}
                     {!isOwner && (
                         <button onClick={handelSubscribe}
                             className={`${channel.subscribers?.includes(currentUser?._id)

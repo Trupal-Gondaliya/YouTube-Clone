@@ -5,28 +5,35 @@ import { FaEdit, FaTrash, FaRegEye, FaRegHeart } from "react-icons/fa";
 import EditVideoModal from './EditVideoModal.jsx';
 
 const ManageVideo = () => {
+    // State & Hooks
     const { id } = useParams();
     const [videos, setVideos] = useState([]);
     const [openEdit, setOpenEdit] = useState(false);
     const [selectedVideo, setSelectedVideo] = useState(null);
     const navigate = useNavigate();
 
+    // Fetches all videos
     const fetchVideos = async () => {
-            try {
-                const res = await axiosInstance.get(`/channels/${id}`);
-                setVideos(res.data.videos);
-            } catch (err) {
-                console.error(err);
-            }
-        };
+        try {
+            const res = await axiosInstance.get(`/channels/${id}`);
+            setVideos(res.data.videos);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    // Effect hook: Re-runs the fetch whenever the ID in the URL changes.
     useEffect(() => {
         fetchVideos();
     }, [id]);
 
+    // Deletes a video after user confirmation.
     const handleDelete = async (videoId) => {
         if (window.confirm("Permanent delete this video?")) {
             try {
                 await axiosInstance.delete(`/videos/${videoId}`);
+
+                // Optimistic UI update: filter out the deleted video from state
                 setVideos(videos.filter(v => v._id !== videoId));
                 alert("Video removed successfully");
             } catch (err) {
@@ -35,6 +42,7 @@ const ManageVideo = () => {
         }
     };
 
+    // Prepares the Edit Modal by setting the target video and opening the UI
     const handleEditClick = (video) => {
         setSelectedVideo(video);
         setOpenEdit(true);
@@ -43,11 +51,13 @@ const ManageVideo = () => {
     return (
         <div className="p-4 md:p-8 bg-gray-50 min-h-screen dark:bg-black">
             <div className="max-w-6xl mx-auto">
+                {/* Header Section */}
                 <div className="flex justify-between items-center mb-8">
                     <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Channel Content</h1>
                     <button onClick={() => navigate(-1)} className="text-gray-600 hover:text-black dark:text-white dark:hover:text-blue-400">Back</button>
                 </div>
 
+                {/* Video Management Table */}
                 <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden dark:bg-neutral-800">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -63,6 +73,7 @@ const ManageVideo = () => {
                             {videos.map(video => (
                                 <tr key={video._id} className="hover:bg-blue-50/30 transition-colors dark:hover:bg-neutral-700">
                                     <td className="p-4 flex gap-4 items-center">
+                                        {/* Video Info: Thumbnail & Title */}
                                         <div className="relative group">
                                             <img src={video.thumbnailUrl} loading="lazy" className="w-28 h-16 object-cover rounded-lg shadow-sm" />
                                         </div>
@@ -71,15 +82,21 @@ const ManageVideo = () => {
                                             <span className="text-xs text-gray-500">{new Date(video.createdAt).toDateString()}</span>
                                         </div>
                                     </td>
+
+                                    {/* Category Tag */}
                                     <td className="p-4 text-center">
                                         <span className="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium text-gray-600">{video.category}</span>
                                     </td>
+
+                                    {/* Statistics */}
                                     <td className="p-4 text-center text-sm text-gray-600 dark:text-white">
                                         <div className="flex items-center justify-center gap-1"><FaRegEye /> {video.views.length}</div>
                                     </td>
                                     <td className="p-4 text-center text-sm text-gray-600 dark:text-white">
                                         <div className="flex items-center justify-center gap-1"><FaRegHeart className="text-red-400" /> {video.likes.length}</div>
                                     </td>
+
+                                    {/* Action Buttons */}
                                     <td className="p-4">
                                         <div className="flex justify-center gap-3">
                                             <button onClick={() => handleEditClick(video)} className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors" title="Edit">
@@ -96,6 +113,7 @@ const ManageVideo = () => {
                     </table>
                 </div>
             </div>
+            {/* Modal for Editing: Only renders when openEdit is true */}
             {openEdit && <EditVideoModal setOpen={setOpenEdit} video={selectedVideo} refresh={fetchVideos} />}
         </div>
     );

@@ -49,22 +49,27 @@ const CreateChannel = ({ setOpen }) => {
     };
 
     return (
+        //Modal Overlay: Dims the background and centers the modal
         <div className="fixed inset-0 top-14 bg-black/50 backdrop-blur-sm flex items-center justify-center z-100">
+            {/* Modal Container: Handles the white/dark mode card styling */}
             <div className="bg-white w-112.5 p-8 rounded-2xl shadow-2xl flex flex-col gap-4 dark:bg-neutral-800 dark:text-white">
                 <h2 className="text-xl font-bold">Channel Details</h2>
 
+                {/* Input: Updates the channel name state on change */}
                 <input type="text" placeholder="Channel Name" className="border p-2 rounded"
                     onChange={(e) => setChannelName(e.target.value)} />
 
                 <textarea placeholder="Description" className="border p-2 rounded"
                     onChange={(e) => setDescription(e.target.value)} />
-
+                
+                {/* File Upload: Captures the first selected file for the banner */}
                 <div className="flex flex-col gap-1">
                     <label className="text-sm font-semibold">Channel Banner (Optional)</label>
                     <input type="file" accept="image/*"
                         onChange={(e) => setBannerFile(e.target.files[0])} />
                 </div>
 
+                {/* ction Buttons: Cancel (closes modal) and Create (triggers logic) */}
                 <div className="flex justify-end gap-3">
                     <button onClick={() => setOpen(false)}
                         className=" w-1/2 bg-red-500 text-white py-2 rounded font-bold hover:bg-red-800 disabled:bg-gray-400">Cancel</button>

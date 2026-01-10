@@ -19,6 +19,7 @@ import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { toggleTheme } from "../redux/userSlice.js";
 
 const Header = ({ toggleSidebar }) => {
+    // State & Selectors
     const { currentUser } = useSelector(state => state.user);
     const [showMenu, setShowMenu] = useState(false);
     const [showChannel, setShowChannel] = useState(false);
@@ -53,12 +54,14 @@ const Header = ({ toggleSidebar }) => {
         }
     }
 
+    // Handles search submission via button or Enter key.
     const handleSearchClick = (e) => {
         if (searchInput.trim()) {
             navigate(`/search?q=${searchInput}`);
         }
     };
 
+    // Logic for Upload button:
     const handleUploadClick = () => {
         if (!currentUser) {
             navigate("/login");
@@ -77,6 +80,7 @@ const Header = ({ toggleSidebar }) => {
 
     return (
         <header className="flex justify-between items-center px-4 h-14 sticky top-0 z-50 bg-[#f9f9f9] text-black dark:bg-black dark:text-white">
+            {/* LEFT SECTION: Menu & Logo */}
             <div className="flex items-center gap-4">
                 <button onClick={toggleSidebar} className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-neutral-700 rounded-full text-2xl">
                     <HiMenu />
@@ -87,6 +91,7 @@ const Header = ({ toggleSidebar }) => {
                 </div>
             </div>
 
+            {/* MIDDLE SECTION: Search Bar & Voice Search */}
             <div className="flex items-center justify-center w-1/2 gap-4 group">
                 <div className="flex items-center flex-1 max-w-150">
                     <div className="flex items-center flex-1 h-10 px-4 bg-white dark:bg-black border border-gray-300 dark:border-neutral-800 rounded-l-full focus-within:border-blue-500 focus-within:shadow-inner">
@@ -107,6 +112,7 @@ const Header = ({ toggleSidebar }) => {
                 </button>
             </div>
 
+            {/* RIGHT SECTION: Auth Actions & User Profile */}
             <div className="flex gap-6 items-center">
                 {currentUser ? (
                     <>
@@ -161,6 +167,8 @@ const Header = ({ toggleSidebar }) => {
                                         <p className="text-sm font-semibold">{currentUser.username}</p>
                                         <p className="text-xs text-gray-500 truncate">{currentUser.email}</p>
                                     </button>
+
+                                    {/* Actions */}
                                     <button
                                         onClick={handleLogout}
                                         className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
@@ -170,8 +178,10 @@ const Header = ({ toggleSidebar }) => {
                                         className="w-full text-left px-4 py-2 text-md text-blue-800 dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 transition">
                                         Create Channel
                                     </button>
+                                    {/* Channel Creation Modal */}
                                     {openChannelModal && <CreateChannel setOpen={setOpenChannelModal} />}
                                     
+                                    {/* Dark Mode Toggle */}
                                     <button
                                         onClick={() => dispatch(toggleTheme())}
                                         className="w-full flex items-center gap-4 px-4 py-3 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors">
@@ -192,6 +202,7 @@ const Header = ({ toggleSidebar }) => {
                         </div>
                     </>
                 ) : (
+                    /* LOGGED OUT STATE */
                     <div className="flex items-center gap-6">
                         <div className="cursor-pointer hover:bg-gray-200 rounded-full p-2 dark:hover:bg-neutral-700">
                             <BsThreeDotsVertical className="text-xl" />

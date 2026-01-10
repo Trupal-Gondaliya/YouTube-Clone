@@ -2,7 +2,10 @@ import React, { useRef, useState } from 'react';
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 
 const FilterBar = ({ selectedFilterCategory, setSelectedFilterCategory }) => {
+    // Reference to the scrollable container to access DOM properties like scrollLeft
     const scrollRef = useRef(null);
+
+    // State to toggle the visibility of the navigation arrows
     const [showLeftBtn, setShowLeftBtn] = useState(false);
     const [showRightBtn, setShowRightBtn] = useState(true);
 
@@ -16,7 +19,9 @@ const FilterBar = ({ selectedFilterCategory, setSelectedFilterCategory }) => {
     // Function to handle scrolling logic
     const handleScroll = () => {
         const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        // Show left button only if we have scrolled away from the start
         setShowLeftBtn(scrollLeft > 0);
+        // Show right button if the hidden content on the right is greater than a small buffer (5px)
         setShowRightBtn(scrollLeft < scrollWidth - clientWidth - 5);
     };
 

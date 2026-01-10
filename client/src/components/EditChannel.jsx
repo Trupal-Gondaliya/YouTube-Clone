@@ -8,6 +8,7 @@ import { updateUserSuccess } from '../redux/userSlice';
 import { useDispatch } from 'react-redux';
 
 const EditChannel = ({ setOpen, channel }) => {
+    // Basic channel info states
     const [name, setName] = useState(channel.channelName);
     const [desc, setDesc] = useState(channel.description);
 
@@ -26,11 +27,12 @@ const EditChannel = ({ setOpen, channel }) => {
         const file = e.target.files[0];
         if (!file) return;
 
+        // Use FileReader to generate a temporary Base64 URL for instant UI feedback
         const reader = new FileReader();
         reader.onloadend = () => {
             if (type === 'banner') {
-                setBanner(file);
-                setBannerPreview(reader.result);
+                setBanner(file); // Store file for upload
+                setBannerPreview(reader.result); /// Store preview for <img> tag
             } else {
                 setAvatar(file);
                 setAvatarPreview(reader.result);
@@ -39,11 +41,13 @@ const EditChannel = ({ setOpen, channel }) => {
         reader.readAsDataURL(file);
     };
 
+    // Resets banner state and UI
     const removeBanner = () => {
         setBanner(null);
         setBannerPreview("");
     };
 
+    // Resets avatar state and UI
     const removeAvatar = () => {
         setAvatar(null);
         setAvatarPreview("");
@@ -51,9 +55,11 @@ const EditChannel = ({ setOpen, channel }) => {
 
     const handleUpdate = async () => {
         setLoading(true);
+        // Default to existing preview URLs if no new file is uploaded
         let bannerUrl = bannerPreview;
         let avatarUrl = avatarPreview;
         try {
+            // Upload images to Cloudinary only if a new file was selected
             if (banner) {
                 bannerUrl = await uploadToCloudinary(banner, "image");
             }
@@ -61,6 +67,7 @@ const EditChannel = ({ setOpen, channel }) => {
                 avatarUrl = await uploadToCloudinary(avatar, "image");
             }
 
+            // Update database with new URLs and text fields
             await axiosInstance.put(`/channels/${channel._id}`, {
                 channelName: name,
                 description: desc,
@@ -68,12 +75,13 @@ const EditChannel = ({ setOpen, channel }) => {
                 avatar: avatarUrl
             });
 
+            // If the user's personal avatar changed, update Redux so the Navbar/Sidebar reflects it
             if (avatar) {
                 dispatch(updateUserSuccess({ avatar: avatarUrl }));
             }
 
             alert("Channel Updated!");
-            window.location.reload(); // Refresh to see changes
+            window.location.reload(); // Hard refresh to sync all global UI components
         } catch (err) {
             console.error(err);
         } finally {
@@ -82,9 +90,11 @@ const EditChannel = ({ setOpen, channel }) => {
     };
 
     return (
+        /* Overlay Backdrop */
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-200 p-4">
+            {/* Modal Container */}
             <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-
+                {/* Header */}
                 <div className="p-6 border-b flex justify-between items-center bg-gray-50 dark:bg-neutral-800">
                     <h2 className="text-xl font-bold text-gray-800 dark:text-white">Edit Channel Settings</h2>
                     <button onClick={() => setOpen(false)} className="text-red-400 hover:text-gray-700 dark:text-white dark:hover:text-red-400">
@@ -92,6 +102,7 @@ const EditChannel = ({ setOpen, channel }) => {
                     </button>
                 </div>
 
+                {/* Form Body - Scrollable */}
                 <div className="p-6 overflow-y-auto space-y-6 dark:bg-neutral-800">
                     {/* Banner Section */}
                     <div className="space-y-2">

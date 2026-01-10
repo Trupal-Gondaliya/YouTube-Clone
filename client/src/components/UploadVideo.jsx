@@ -4,21 +4,27 @@ import uploadToCloudinary from '../utils/uploadToCloudinary';
 import axiosInstance from '../utils/axiosInstance';
 
 const UploadVideo = () => {
-    const [videoFile, setVideoFile] = useState(null);
-    const [imgFile, setImgFile] = useState(null);
-    const [inputs, setInputs] = useState({ title: "", description: "", category: "" });
-    const [loading, setLoading] = useState(false);
+    const [videoFile, setVideoFile] = useState(null); // Stores the selected video file object
+    const [imgFile, setImgFile] = useState(null); // Stores the selected thumbnail file object
+    const [inputs, setInputs] = useState({ title: "", description: "", category: "" }); // Form text inputs
+    const [loading, setLoading] = useState(false); // UI loading state for the upload button
 
+    // NAVIGATION & ROUTING
     const location = useLocation();
     const navigate = useNavigate();
+
+    // Safely retrieve the channelId passed from the previous route's state
     const channelId = location.state?.channelId;
 
+    // Updates text input state dynamically
     const handleChange = (e) => {
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleUpload = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Prevent page refresh on form submit
+
+        // Basic validation
         if (!videoFile || !imgFile) return alert("Please select both video and thumbnail!");
 
         setLoading(true);
@@ -45,7 +51,7 @@ const UploadVideo = () => {
         }
     };
 
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Controls category menu visibility
     const categories = [
         "Lord", "Music", "Gaming", "Education", "Technology", "Film", "Animation",
         "Comedy", "Entertainment", "Vlogs", "Science", "News", "Politics",
@@ -54,23 +60,28 @@ const UploadVideo = () => {
     ];
 
     return (
+        /* Overlay Backdrop: navigate('/') on click closes the modal if the user clicks the background */
         <div onClick={() => navigate('/')} className="fixed inset-0 top-0 bg-black/50 backdrop-blur-sm  flex items-center justify-center p-4 min-h-screen z-100">
-            <form onSubmit={handleUpload} className="bg-white p-6 rounded-2xl shadow-md w-full max-w-2xl flex flex-col gap-4 max-h-[95vh] overflow-y-auto dark:bg-neutral-800">
+            {/* Modal Form: stopPropagation prevents the 'navigate' above from firing when clicking inside the form */}
+            <form onClick={(e) => e.stopPropagation()} onSubmit={handleUpload} className="bg-white p-6 rounded-2xl shadow-md w-full max-w-2xl flex flex-col gap-4 max-h-[95vh] overflow-y-auto dark:bg-neutral-800">
                 <h1 className="text-2xl font-bold text-red-600">Upload a Video</h1>
 
+                {/* File Inputs */}
                 <label className="font-semibold">Video File:</label>
                 <input type="file" accept="video/*" onChange={(e) => setVideoFile(e.target.files[0])} required className='border p-2' />
 
                 <label className="font-semibold">Thumbnail Image:</label>
                 <input type="file" accept="image/*" onChange={(e) => setImgFile(e.target.files[0])} required className='border p-2' />
-
+                
+                {/* Text Inputs */}
                 <input type="text" name="title" placeholder="Title" className="border p-2 rounded" onChange={handleChange} required />
                 <textarea name="description" placeholder="Description" className="border p-2 rounded h-32" onChange={handleChange} required />
 
+                {/* Custom Category Dropdown */}
                 <div className="relative flex flex-col gap-1">
                     <label className="font-semibold text-sm text-gray-600 dark:text-white">Category</label>
 
-                    {/* The Select Button */}
+                    {/* Dropdown Toggle Button */}
                     <div
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         className="border p-3 rounded-lg bg-white cursor-pointer flex justify-between items-center dark:bg-neutral-800">
@@ -103,7 +114,8 @@ const UploadVideo = () => {
                         </div>
                     )}
                 </div>
-
+                
+                {/* Action Buttons */}
                 <div className="flex items-center gap-3">
                     <button onClick={() => navigate('/')}
                         className=" w-1/2 bg-red-500 text-white py-2 rounded font-bold hover:bg-red-800 disabled:bg-gray-400">Cancel</button>

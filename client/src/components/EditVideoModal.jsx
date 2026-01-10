@@ -4,6 +4,7 @@ import { FaXmark } from "react-icons/fa6";
 import uploadToCloudinary from '../utils/uploadToCloudinary';
 
 const EditVideoModal = ({ setOpen, video, refresh }) => {
+    // Local state for text fields and existing thumbnail URL
     const [inputs, setInputs] = useState({
         title: video.title,
         description: video.description,
@@ -11,6 +12,7 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
         thumbnailUrl: video.thumbnailUrl
     });
 
+    // imgFile holds the actual File object if the user selects a new image
     const [imgFile, setImgFile] = useState(null);
     const [loading, setLoading] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -21,15 +23,18 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
         "Art", "Motivation", "Other"
     ];
 
+    // Generic handler for text inputs and textareas
     const handleChange = (e) => {
         setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
+    // Handles selecting a new image file and creates a local preview
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
         setImgFile(file);
 
+        // FileReader creates a base64 string for instant UI preview before upload
         const reader = new FileReader();
         reader.onloadend = () => {
             setInputs(prev => ({ ...prev, thumbnailUrl: reader.result }));
@@ -37,22 +42,25 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
         reader.readAsDataURL(file);
     };
 
+    // Main submission logic
     const handleUpdate = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             let currentThumbnail = inputs.thumbnailUrl;
 
+            // If a new file was selected, upload to Cloudinary first
             if (imgFile) {
                 currentThumbnail = await uploadToCloudinary(imgFile, "image");
             }
 
+            // Update database via backend API
             await axiosInstance.put(`/videos/${video._id}`, {
                 ...inputs, thumbnailUrl: currentThumbnail
             });
             alert("Video updated!");
-            refresh();
-            setOpen(false);
+            refresh(); // Refresh parent list
+            setOpen(false); // Close modal
         } catch (err) {
             console.error(err);
         } finally {
@@ -61,12 +69,16 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
     };
 
     return (
+        /* Modal Overlay */
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <form onSubmit={handleUpdate} className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6 flex flex-col gap-4 dark:bg-neutral-800 h-[90%] ">
+                {/* Header */}
                 <div className="flex justify-between items-center border-b pb-3">
                     <h2 className="text-xl font-bold">Edit Video Details</h2>
                     <button type="button" onClick={() => setOpen(false)} className="dark:hover:bg-neutral-700 rounded-full p-3"><FaXmark /></button>
                 </div>
+
+                {/* Scrollable Form Body */}
                 <div className="overflow-y-auto [&::-webkit-scrollbar]:w-2
                     [&::-webkit-scrollbar-track]:rounded-full
                     [&::-webkit-scrollbar-track]:bg-gray-100
@@ -82,11 +94,13 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
                         <input type="file" accept="image/*" onChange={e => handleFileChange(e)} className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
                     </div>
 
+                    {/* Title Input */}
                     <div className="flex flex-col gap-1">
                         <label className="text-sm font-semibold">Title</label>
                         <input name="title" type="text" value={inputs.title} onChange={handleChange} className="border p-2 rounded-lg outline-none focus:border-blue-500" required />
                     </div>
-
+                    
+                    {/* Description Area */}
                     <div className="flex flex-col gap-1">
                         <label className="text-sm font-semibold">Description</label>
                         <textarea name="description" value={inputs.description} onChange={handleChange} className="border p-2 rounded-lg h-32 resize-none outline-none focus:border-blue-500 overflow-y-auto
@@ -98,7 +112,8 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
                             dark:[&::-webkit-scrollbar-track]:bg-neutral-700
                             dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500" required />
                     </div>
-
+                    
+                    {/* Custom Category Dropdown */}
                     <div className="flex flex-col gap-1 relative">
                         <label className="text-sm font-semibold">Category</label>
                         <div
@@ -125,7 +140,8 @@ const EditVideoModal = ({ setOpen, video, refresh }) => {
                             </div>
                         )}
                     </div>
-
+                    
+                    {/* Action Buttons */}
                     <div className="flex gap-3 mt-4">
                         <button type="button" onClick={() => setOpen(false)} className="flex-1 py-2 border rounded-lg hover:bg-gray-50 dark:hover:bg-neutral-700">Cancel</button>
                         <button disabled={loading} type="submit" className="flex-1 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700">

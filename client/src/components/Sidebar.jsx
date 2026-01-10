@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axiosInstance from "../utils/axiosInstance";
 
+// sidebar item
 const SidebarItem = ({ icon, label, isOpen }) => (
     <div className={`flex items-center rounded-lg cursor-pointer transition-colors
         ${isOpen

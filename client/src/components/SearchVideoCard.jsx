@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 const SearchVideoCard = ({ video }) => {
     return (
+        // Link wraps the entire card to make it clickable.
         <Link to={`/video/${video._id}`} className="flex flex-col md:flex-row gap-4 mb-5 group cursor-pointer">
             <div className="relative w-full md:w-96 h-52 shrink-0 overflow-hidden rounded-xl">
                 <img

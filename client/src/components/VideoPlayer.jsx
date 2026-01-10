@@ -12,17 +12,18 @@ import { IoSaveOutline, IoSaveSharp } from "react-icons/io5";
 import { toast, Toaster } from 'react-hot-toast';
 
 const VideoPlayer = () => {
-    const { id } = useParams();
-    const [video, setVideo] = useState(null);
-    const [recommended, setRecommended] = useState([]);
-    const { currentUser } = useSelector((state) => state.user);
-    const dispatch = useDispatch();
-    const [isExpandedDesc, setIsExpandedDesc] = useState(false);
-    const [watchLater, setWatchLater] = useState([]);
+    const { id } = useParams(); // Extracts the video ID from the URL
+    const [video, setVideo] = useState(null); // Stores main video data
+    const [recommended, setRecommended] = useState([]); // Stores list of sidebar(recommended) videos
+    const { currentUser } = useSelector((state) => state.user); // Access user from Redux store
+    const dispatch = useDispatch(); // Used to update Redux state
+    const [isExpandedDesc, setIsExpandedDesc] = useState(false); // Toggle for "read more" description
+    const [watchLater, setWatchLater] = useState([]); // Local state for user's watch list
 
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // Fetch the specific video details
                 const videoRes = await axiosInstance.get(`/videos/find/${id}`);
                 setVideo(videoRes.data);
 
@@ -38,10 +39,12 @@ const VideoPlayer = () => {
             }
         };
         fetchData();
-    }, [id]);
+    }, [id]); // Re-run effect whenever the URL ID changes
 
+    // Loading State
     if (!video) return <div className="p-10">Loading...</div>;
 
+    // Handles Liking a video
     const handelLike = async () => {
         if (!currentUser) return alert("Please login to like videos!!");
         try {
@@ -63,6 +66,7 @@ const VideoPlayer = () => {
         }
     }
 
+    // Handles Disliking a video
     const handelDislike = async () => {
         if (!currentUser) return alert("Please login to dislike videos!!");
         try {
@@ -71,9 +75,11 @@ const VideoPlayer = () => {
                 const isDislike = prev.dislikes.includes(currentUser._id);
                 return {
                     ...prev,
+                    // If already disliked, remove it; else add it
                     dislikes: isDislike
                         ? prev.dislikes.filter((id) => id != currentUser._id)
                         : [...prev.dislikes, currentUser._id],
+                    // Always remove from likes if the user dislikes the video
                     likes: prev.likes.filter((id) => id != currentUser._id),
                 };
             });
@@ -82,11 +88,13 @@ const VideoPlayer = () => {
         }
     }
 
+    // Handles Subscription logic
     const handelSubscribe = async () => {
         if (!currentUser) return alert("Please login to subscribe to the channel!!");
         const targetChannelId = video.channelId?._id || video.channelId;
         try {
             await axiosInstance.put(`/channels/subscribe/${targetChannelId}`);
+            // Update the subscriber count in the local video object
             setVideo((prev) => {
                 const currentSubscribers = prev.channelId?.subscribers || [];
                 const isSubscribed = currentSubscribers.includes(currentUser._id);
@@ -100,6 +108,8 @@ const VideoPlayer = () => {
                     }
                 };
             });
+
+            // Update the global user state (Redux) to reflect the new subscription
             const isCurrentlySubscribed = currentUser.subscribedUsers?.includes(targetChannelId);
 
             const updatedList = isCurrentlySubscribed
@@ -112,18 +122,20 @@ const VideoPlayer = () => {
         }
     }
 
+    // Description logic
     const descriptionLimit = 200;
     const isLongDescription = video.description?.length > descriptionLimit;
-
+    // Truncates text if not expanded
     const displayText = isExpandedDesc
         ? video.description
         : video.description?.slice(0, descriptionLimit);
 
+    // Handles Watch Later Toggle
     const handleWatchLater = async () => {
         if (!currentUser) return alert("Please login first!");
         try {
             const res = await axiosInstance.post(`/watchlater/${video._id}`);
-            // 2. MANUALLY update the local state to trigger a re-render
+            // MANUALLY update the local state to trigger a re-render
             setWatchLater((prevList) => {
                 const isAdded = prevList.some(item => item._id === video._id);
 
@@ -135,6 +147,7 @@ const VideoPlayer = () => {
                     return [...prevList, video];
                 }
             });
+            // Show success notification
             toast.success(res.data.message, {
                 style: { borderRadius: '10px', background: '#333', color: '#fff' }
             });

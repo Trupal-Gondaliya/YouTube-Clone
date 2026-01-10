@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const VideoGrid = ({ video, userData }) => {
+  // access uploader profile image
   const avatarSrc = video.uploader?.avatar || userData?.avatar;
+  // access uploader name
   const displayName = video.uploader?.username || userData?.username || "U";
 
   return (

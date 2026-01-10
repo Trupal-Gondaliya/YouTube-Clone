@@ -3,16 +3,18 @@ import axiosInstance from '../utils/axiosInstance.js';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Signup = () => {
+    // Local state for form inputs
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // Hooks for programmatic navigation
 
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
             await axiosInstance.post("http://localhost:5000/auth/signup", { username, email, password });
             alert("Registration Successful!");
+            // navigate to login after successfully signup
             navigate("/login");
         } catch (err) {
             alert(err.response?.data?.message || "Something went wrong");
@@ -22,6 +24,7 @@ const Signup = () => {
     return (
         <div className=" flex flex-col items-center justify-center min-h-[calc(100vh-56px)] bg-gray-50 dark:bg-black">
             <div className="relative bg-white p-8 border border-gray-300 rounded-lg shadow-sm w-full max-w-md dark:bg-neutral-800">
+                {/* Close/Exit button redirecting to home */}
                 <Link to="/">
                     <div className='absolute top-4 right-8'>&#10060;</div>
                 </Link>
@@ -31,18 +34,23 @@ const Signup = () => {
                 </div>
 
                 <form onSubmit={handleSignup} className="flex flex-col gap-4">
+                    {/* Username Input */}
                     <input
                         type="text"
                         placeholder="Username"
                         className="w-full px-4 py-3 border border-gray-300 rounded focus:border-blue-500 outline-none"
                         onChange={e => setUsername(e.target.value)}
                         required />
+                    
+                    {/* Email Input */}
                     <input
                         type="email"
                         placeholder="Email"
                         className="w-full px-4 py-3 border border-gray-300 rounded focus:border-blue-500 outline-none"
                         onChange={e => setEmail(e.target.value)}
                         required />
+
+                    {/* Password Input */}
                     <input
                         type="password"
                         placeholder="Password"
@@ -51,9 +59,11 @@ const Signup = () => {
                         required />
 
                     <div className="flex justify-between items-center mt-6">
+                        {/* Navigation to login */}
                         <Link to="/login" className="text-blue-600 font-medium text-sm hover:underline">
                             Sign in instead
                         </Link>
+                        {/* Submit Button */}
                         <button
                             type="submit"
                             className="px-6 py-2 bg-blue-600 text-white rounded-md font-medium hover:bg-blue-700 transition">

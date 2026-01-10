@@ -6,43 +6,50 @@ import FilterBar from './FilterBar.jsx';
 import { HiOutlineVideoCameraSlash } from "react-icons/hi2";
 
 const Home = () => {
+  // STATE MANAGEMENT
   const [videos, setVideos] = useState([]);
-  const { isSidebarOpen } = useOutletContext();
+  const { isSidebarOpen } = useOutletContext(); // Accesses shared state (sidebar toggle) from the Layout component via React Router
   const [selectedFilterCategory, setSelectedFilterCategory] = useState("All");
   const [loading, setLoading] = useState(true);
 
+  // Data Fetching
   useEffect(() => {
     const fetchVideos = async () => {
-      setLoading(true);
+      setLoading(true); // Start loading spinner
       try {
+        // Determine the endpoint: fetch all videos or filter by category
         const url = selectedFilterCategory === "All"
           ? "/videos/"
           : `/videos/category?cat=${selectedFilterCategory}`;
         const res = await axiosInstance.get(url);
-        setVideos(res.data);
+        setVideos(res.data); // Update state with API response
       } catch (err) {
         console.error(err);
       } finally {
+        // Stop loading spinner regardless of success or error
         setLoading(false);
       }
     };
     fetchVideos();
-  }, [selectedFilterCategory]);
+  }, [selectedFilterCategory]); // Re-run this effect whenever the category changes
 
   return (
     <div className='flex flex-col w-full min-h-screen'>
+      {/* Category Selection Bar */}
       <FilterBar
         selectedFilterCategory={selectedFilterCategory}
         setSelectedFilterCategory={setSelectedFilterCategory}
       />
 
       <div className="flex-1 p-4">
+        {/* CASE 1: Data is still loading */}
         {loading ? (
           <div className="flex items-center justify-center h-64 text-gray-500 font-medium">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mr-3"></div>
             Loading videos...
           </div>
         ) : videos.length > 0 ? (
+          /* CASE 2: Videos were found - Render the Grid */
           <div className={`top-4 grid gap-4 transition-all duration-300
             ${isSidebarOpen
               ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
@@ -54,6 +61,7 @@ const Home = () => {
             ))}
           </div>
         ) : (
+          /* CASE 3: No videos found for the selected category */
           <div className="flex flex-col items-center justify-center py-32 text-gray-400 w-full">
             <HiOutlineVideoCameraSlash className="text-8xl mb-4 opacity-10" />
             <h2 className="text-2xl font-bold text-gray-700 dark:text-white">No videos found</h2>
@@ -61,6 +69,8 @@ const Home = () => {
               There are currently no videos in the
               <span className="font-bold text-gray-700 dark:text-white"> "{selectedFilterCategory}"</span> category.
             </p>
+
+            {/* Reset button to clear filters */}
             <button
               onClick={() => setSelectedFilterCategory("All")}
               className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition shadow-md">
