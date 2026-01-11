@@ -74,5 +74,16 @@ A professional-grade YouTube clone built with the MERN stack. This project featu
     - Watch Later: Click the "Save" icon on any video to add it to your private "Watch Later" list.
     - You Tab: Visit the "You" tab to see a summary of your Liked Videos, Watch Later list, and your own channels.
 
+## Database Setup (Local MongoDB)
+- Since this project uses a local MongoDB instance, follow these steps to see the sample data:
+    - Open MongoDB Compass and connect to mongodb://localhost:27017.
+    - Create a database named youtubeClone (or your specific DB name).
+    - Create collections named users, videos, channels,watchlater and comments.
+    - For each collection:
+        - Click on the collection name.
+        - Click Add Data -> Import JSON or CSV file.
+        -   Select the corresponding file from the /data_seed folder in this repository.
+        - Click Import.
+
 ## Git Repo Link
 https://github.com/Trupal-Gondaliya/YouTube-Clone
