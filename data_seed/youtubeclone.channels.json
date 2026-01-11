@@ -1,0 +1,124 @@
+[{
+  "_id": {
+    "$oid": "694ea14289669cd109fd4ab8"
+  },
+  "channelName": "Craft By Titli",
+  "owner": {
+    "$oid": "694ea0e389669cd109fd4ab5"
+  },
+  "description": "✂️ Crafted Channel – Simple & Clean\n\nWelcome to Crafted 🎨\nThis channel is all about creative crafts, DIY ideas, handmade art, and easy step-by-step projects you can try at home. From paper crafts to recycled art, we turn simple things into something beautiful.\n\n✨ New craft ideas\n✨ Easy DIY tutorials\n✨ Creative handmade projects\n\nSubscribe and craft along with us! 💖",
+  "channelBanner": "https://res.cloudinary.com/dqvfgww65/image/upload/v1766760770/m6qjouwpdwhhswp7fm7w.jpg",
+  "subscribers": [
+    "694ea0e389669cd109fd4ab5"
+  ],
+  "videos": [
+    {
+      "$oid": "6953891fe6ec4358298c60be"
+    },
+    {
+      "$oid": "69577babb3dae850a7c53ada"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-12-26T14:52:50.586Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-05T16:18:59.721Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6955181c4290b309d9731d59"
+  },
+  "channelName": "Cupture_Birds",
+  "owner": {
+    "$oid": "694d322e7241220328592bc7"
+  },
+  "description": "Birds ...\n🐥🐧🐣🦢",
+  "channelBanner": "https://res.cloudinary.com/dqvfgww65/image/upload/v1767184471/qwz7x7h5u2o5pmucnhxm.jpg",
+  "subscribers": [
+    "694ea0e389669cd109fd4ab5"
+  ],
+  "createdAt": {
+    "$date": "2025-12-31T12:33:32.775Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-05T06:37:05.260Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695524654290b309d9731dfb"
+  },
+  "channelName": "Travel_withRohan",
+  "owner": {
+    "$oid": "6951264f85b24ad2b0dcd3c4"
+  },
+  "description": "#Travel\nBeach🏄‍♂️🌴🏖️🌞\nMountain ⛰️🧗‍♂️\nSky diving✈️🚅\n...................................\n...................",
+  "channelBanner": "https://res.cloudinary.com/dqvfgww65/image/upload/v1767187556/mvvlnmxlz5uk0mydzmeq.jpg",
+  "subscribers": [],
+  "videos": [
+    {
+      "$oid": "695525544290b309d9731e05"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-12-31T13:25:57.371Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-01T08:01:37.670Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69629c0d3c50debb13548fd8"
+  },
+  "channelName": "abx",
+  "owner": {
+    "$oid": "694ea0e389669cd109fd4ab5"
+  },
+  "description": "abc",
+  "channelBanner": "",
+  "subscribers": [],
+  "videos": [],
+  "createdAt": {
+    "$date": "2026-01-10T18:35:57.992Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-10T18:35:57.992Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6963d1defc57780c7a173cac"
+  },
+  "channelName": "Code_learning",
+  "owner": {
+    "$oid": "6963d14dfc57780c7a173ca3"
+  },
+  "description": "A channel dedicated to high-quality coding tutorials and tech roadmaps, specifically focused on JavaScript, React, and Backend development.",
+  "channelBanner": "https://res.cloudinary.com/dqvfgww65/image/upload/v1768149469/nqdckdfri8ohgyyq9eyc.jpg",
+  "subscribers": [],
+  "videos": [
+    {
+      "$oid": "6963d2b5fc57780c7a173cb5"
+    },
+    {
+      "$oid": "6963d56ffc57780c7a173cc7"
+    },
+    {
+      "$oid": "6963d65dfc57780c7a173ccd"
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-01-11T16:37:50.264Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-11T16:57:01.497Z"
+  },
+  "__v": 0
+}]

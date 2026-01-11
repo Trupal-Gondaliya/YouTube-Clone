@@ -1,0 +1,85 @@
+[{
+  "_id": {
+    "$oid": "694d322e7241220328592bc7"
+  },
+  "username": "Ruhi",
+  "email": "ruhi@123gmail.com",
+  "password": "$2b$10$hluylI0goC91tjtbxnwjtuY5UaatzEwwSHnx2hjKMbnaXGu2k9SHq",
+  "channels": [
+    {
+      "$oid": "6955181c4290b309d9731d59"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-12-25T12:46:38.574Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-31T12:34:34.222Z"
+  },
+  "__v": 0,
+  "avatar": "https://res.cloudinary.com/dqvfgww65/image/upload/v1767184472/e47xne84h4ydgbx1unqh.jpg"
+},
+{
+  "_id": {
+    "$oid": "694ea0e389669cd109fd4ab5"
+  },
+  "username": "Titli",
+  "email": "titli@gmail.com",
+  "password": "$2b$10$ep2yX7DN3c/5uwN/bmVQ3.XGwCWVPb3NKhhZZBXdHr9OLMbQ2.hny",
+  "channels": [
+    {
+      "$oid": "694ea14289669cd109fd4ab8"
+    },
+    {
+      "$oid": "69629c0d3c50debb13548fd8"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-12-26T14:51:15.490Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-10T18:35:58.006Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6951264f85b24ad2b0dcd3c4"
+  },
+  "username": "Rohan",
+  "email": "rohan@gmail.com",
+  "password": "$2b$10$DF1U9wDQMeSWQUzMod10bOefamUlj2TQ1WanEGORsuptbTbmRC7Ka",
+  "channels": [
+    {
+      "$oid": "695524654290b309d9731dfb"
+    }
+  ],
+  "createdAt": {
+    "$date": "2025-12-28T12:45:03.834Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-31T13:40:48.385Z"
+  },
+  "__v": 0,
+  "avatar": "https://res.cloudinary.com/dqvfgww65/image/upload/v1767187657/qresccalfjvsiokasice.jpg"
+},
+{
+  "_id": {
+    "$oid": "6963d14dfc57780c7a173ca3"
+  },
+  "username": "Trupal",
+  "email": "trupal123@gmail.com",
+  "password": "$2b$10$C0WnLB3s9xsHbKYDhtiLaOUawPysqgglagg2AHWVS/ZtLdrH8en7.",
+  "channels": [
+    {
+      "$oid": "6963d1defc57780c7a173cac"
+    }
+  ],
+  "createdAt": {
+    "$date": "2026-01-11T16:35:25.546Z"
+  },
+  "updatedAt": {
+    "$date": "2026-01-11T16:37:50.269Z"
+  },
+  "__v": 0
+}]
