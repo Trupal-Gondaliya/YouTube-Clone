@@ -228,7 +228,7 @@ const Header = ({ toggleSidebar }) => {
                                     </button>
                                     <button onClick={() => setOpenChannelModal(true)} className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-neutral-700">Create New Channel</button>
                                     <button onClick={viewAllchannel} className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-neutral-700">View All Channel</button>
-                                    <button className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 border-t dark:border-neutral-700 mt-1">Sign out</button>
+                                    <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-neutral-700 border-t dark:border-neutral-700 mt-1">Sign out</button>
                                 </div>
                             )}
                         </div>
